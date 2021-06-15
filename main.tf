@@ -20,3 +20,18 @@ resource "aws_instance" "this" {
   }
 
 }
+
+
+resource "aws_ebs_volume" "this" {
+  size = 2
+  availability_zone = aws_instance.this.availability_zone[count.index]
+  
+}
+
+resource "aws_volume_attachment" "this" {
+  device_name = "/dev/sdh"
+  volume_id = aws_ebs_volume.this[count.index].id
+  instance_id = aws_instance.this.id[count.index]
+
+  
+}
