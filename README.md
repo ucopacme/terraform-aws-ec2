@@ -19,6 +19,7 @@ The module will create:
 ## Usage
 Create terragrunt.hcl config file and past the following configuration.
 
+```hcl
 
 #
 # Include all settings from root terragrunt.hcl file
