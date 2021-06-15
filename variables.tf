@@ -21,10 +21,16 @@ variable "enabled" {
   default     = "true"
 }
 
-variable "iam_instance_profile" {
-  default     = null
-  description = "instance profile"
+ariable "enabled_ebs_volume" {
   type        = string
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = "true"
+}
+
+ariable "enable_ebs_volume_attachment" {
+  type        = string
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = "true"
 }
 
 
