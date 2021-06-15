@@ -21,13 +21,13 @@ variable "enabled" {
   default     = "true"
 }
 
-ariable "enabled_ebs_volume" {
+variable "enabled_ebs_volume" {
   type        = string
   description = "Set to `false` to prevent the module from creating any resources"
   default     = "true"
 }
 
-ariable "enable_ebs_volume_attachment" {
+variable "enable_ebs_volume_attachment" {
   type        = string
   description = "Set to `false` to prevent the module from creating any resources"
   default     = "true"
