@@ -24,7 +24,8 @@ resource "aws_instance" "this" {
 
 resource "aws_ebs_volume" "this" {
   count= local.enabled ? 1 : 0
-  size = 2
+  size = var.ebs_volume_size
+  type= var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
   
 }
