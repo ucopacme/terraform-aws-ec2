@@ -24,7 +24,7 @@ resource "aws_instance" "this" {
 
 resource "aws_ebs_volume" "this" {
   size = 2
-  availability_zone = aws_instance.this[count.index].availability_zone
+  availability_zone = aws_instance.this.*.availability_zone
   
 }
 
