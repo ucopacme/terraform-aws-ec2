@@ -30,8 +30,8 @@ resource "aws_ebs_volume" "this" {
 
 resource "aws_volume_attachment" "this" {
   device_name = "/dev/sdh"
-  volume_id = aws_ebs_volume.this.*.id
-  instance_id = aws_instance.this.*.id
+  volume_id = aws_ebs_volume.this.*.id[0]
+  instance_id = aws_instance.this.*.id[0]
 
   
 }
