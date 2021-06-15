@@ -23,12 +23,14 @@ resource "aws_instance" "this" {
 
 
 resource "aws_ebs_volume" "this" {
+  count= local.enabled ? 1 : 0
   size = 2
   availability_zone = aws_instance.this.*.availability_zone[0]
   
 }
 
 resource "aws_volume_attachment" "this" {
+  count = local.enabled ? 1 : 0
   device_name = "/dev/sdh"
   volume_id = aws_ebs_volume.this.*.id[0]
   instance_id = aws_instance.this.*.id[0]
