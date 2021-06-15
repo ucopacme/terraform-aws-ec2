@@ -16,19 +16,19 @@ variable "associate_public_ip_address" {
 # }
 
 variable "enabled" {
-  type        = string
+  type        = bool
   description = "Set to `false` to prevent the module from creating any resources"
   default     = "true"
 }
 
 variable "enabled_ebs_volume" {
-  type        = string
+  type        = bool
   description = "Set to `false` to prevent the module from creating any resources"
   default     = "true"
 }
 
 variable "enable_ebs_volume_attachment" {
-  type        = string
+  type        = bool
   description = "Set to `false` to prevent the module from creating any resources"
   default     = "true"
 }
