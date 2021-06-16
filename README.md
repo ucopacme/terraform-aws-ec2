@@ -30,7 +30,7 @@ dependency "sg" {
   config_path = "../sg"
 }
 inputs = {
-  enabled                      = true
+  enabled                      = true # change it to false to destory the ec2 instance
   enabled_ebs_volume           = false # Default is false, change it to true to add scondary ebs volume
   enable_ebs_volume_attachment = false # Default is false, change it to true to attach ebs volume to ec2 insance
   ami                          = "ami-0800fc0fa715fdcfe"
