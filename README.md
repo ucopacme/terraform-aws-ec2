@@ -16,7 +16,7 @@ The module will create:
 
 
 ## Usage
-Create terragrunt.hcl config file and past the following configuration.
+Create terragrunt.hcl config file, copy/past the following configuration.
 
 ```hcl
 
