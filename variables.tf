@@ -16,9 +16,9 @@ variable "associate_public_ip_address" {
 # }
 
 variable "enabled" {
-  type        = bool
+  type        = string
   description = "Set to `false` to prevent the module from creating any resources"
-  default     = true
+  default     = "true"
 }
 
 variable "enabled_ebs_volume" {
