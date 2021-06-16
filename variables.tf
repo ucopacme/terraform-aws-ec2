@@ -24,13 +24,13 @@ variable "enabled" {
 variable "enabled_ebs_volume" {
   type        = bool
   description = "Set to `false` to prevent the module from creating any resources"
-  default     = true
+  default     = false
 }
 
 variable "enable_ebs_volume_attachment" {
   type        = bool
   description = "Set to `false` to prevent the module from creating any resources"
-  default     = true
+  default     = false
 }
 
 
