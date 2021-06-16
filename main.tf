@@ -23,7 +23,7 @@ resource "aws_instance" "this" {
 
 
 resource "aws_ebs_volume" "this" {
-  count= var.enabled && var.enabled_ebs_volume #? 1 : 0
+  count= var.enabled_ebs_volume ? 1 : 0
   size = var.ebs_volume_size
   type= var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
@@ -31,7 +31,7 @@ resource "aws_ebs_volume" "this" {
 }
 
 resource "aws_volume_attachment" "this" {
-  count = var.enabled && var.enable_ebs_volume_attachment #? 1 : 0
+  count = var.enable_ebs_volume_attachment ? 1 : 0
   device_name = "/dev/sdh"
   volume_id = aws_ebs_volume.this.*.id[0]
   instance_id = aws_instance.this.*.id[0]
