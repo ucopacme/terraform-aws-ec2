@@ -74,7 +74,7 @@ variable "root_volume_size" {
 variable "ebs_volume_size" {
 type = number
 description = "size of ebs volume"
-default = 50
+default = null
 }
 
 variable "volume_type" {
