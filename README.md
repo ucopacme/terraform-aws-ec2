@@ -26,6 +26,8 @@ include {
   path = find_in_parent_folders()
 }
 
+# make sure you deploy the security group before creating ec2 instance, ec2 instance depends on the security group.
+
 dependency "sg" {
   config_path = "../sg"
 }
@@ -37,7 +39,7 @@ inputs = {
   instance_type                = "t2.micro" # Default type is t2.micro
   subnet_id                    = "subnet-084c56f1fd8699098098"
   vpc_security_group_ids       = [dependency.sg.outputs.id]
-  key_name                     = "khalid-chsdev-key"
+  key_name                     = "my-key"
   root_volume_size             = 50    # Default size is 100GB
   volume_type                  = "gp3" # Default type is gp3
   ebs_volume_size              = 10    # Default null, adding secondary ebs
