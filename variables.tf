@@ -72,15 +72,15 @@ variable "root_volume_size" {
 }
 
 variable "ebs_volume_size" {
-type = number
-description = "size of ebs volume"
-default = null
+  type        = number
+  description = "size of ebs volume"
+  default     = null
 }
 
 variable "volume_type" {
-  type = string
+  type        = string
   description = "volume_type"
-  default = "gp3"
+  default     = "gp3"
 }
 
 variable "role_name" {
@@ -90,19 +90,88 @@ variable "role_name" {
 }
 
 variable "key_name" {
-  type = string
+  type        = string
   description = "EC2 key"
-  default = ""
+  default     = ""
 }
 
 variable "vpc_security_group_ids" {
-  type = list(string)
+  type        = list(string)
   description = "(optional) describe your variable"
-  default = []
+  default     = []
 }
 
 variable "aws_iam_instance_profile" {
-  type = string
+  type        = string
   description = "(optional) describe your variable"
-  default = null
+  default     = null
+}
+
+variable "ebs_optimized" {
+  type        = bool
+  default     = false
+  description = "If true, the launched EC2 instance will be EBS-optimized."
+}
+
+variable "monitoring" {
+  type        = bool
+  default     = false
+  description = "If true, the launched EC2 instance will have detailed monitoring enabled. (Available since v0.6.0)."
+}
+
+variable "disable_api_termination" {
+  type        = bool
+  default     = false
+  description = "If true, enables EC2 Instance Termination Protection."
+}
+
+# AMI search
+
+variable "os" {
+  description = "The Os reference to search for"
+}
+
+variable "amis_primary_owners" {
+  description = "Force the ami Owner, could be (self) or specific (id)"
+  default     = ""
+}
+
+variable "amis_os_map_regex" {
+  description = "Map of regex to search amis"
+  type        = map
+
+  default = {
+    ubuntu1804        = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
+    ubuntu1810        = "^ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-.*"
+    ubuntu1904        = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
+    centos7           = "CentOS.Linux.7.*x86_64.*"
+    centos8           = "CentOS.Linux.8.*x86_64.*"
+    rhel6             = "^RHEL-6.*x86_64.*"
+    rhel7             = "^RHEL-7.*x86_64.*"
+    rhel8             = "^RHEL-8.*x86_64.*"
+    amazon-2          = "^amzn2-ami-hvm-.*x86_64-gp2"
+    windows-2019-base = "^Windows_Server-2019-English-Full-Base-.*"
+    windows2016       = "^Windows_Server-2016-English-Full-Base-.*"
+    windows2012r2     = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
+  }
+}
+
+variable "amis_os_map_owners" {
+  description = "Map of amis owner to filter only official amis"
+  type        = map
+  default = {
+    ubuntu1804    = "099720109477" #CANONICAL
+    ubuntu1810    = "099720109477" #CANONICAL
+    ubuntu1904    = "099720109477" #CANONICAL
+    rhel6         = "309956199498" #Amazon Web Services
+    rhel7         = "309956199498" #Amazon Web Services
+    rhel8         = "309956199498" #Amazon Web Services
+    centos7       = "679593333241"
+    centos8       = "679593333241"
+    amazon        = "137112412989" #amazon
+    amazon-2      = "137112412989" #amazon
+    windows2019   = "801119661308" #amazon
+    windows2016   = "801119661308" #amazon
+    windows2012r2 = "801119661308" #amazon
+  }
 }
