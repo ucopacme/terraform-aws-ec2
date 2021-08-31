@@ -150,7 +150,7 @@ variable "amis_os_map_regex" {
     rhel7             = "^RHEL-7.*x86_64.*"
     rhel8             = "^RHEL-8.*x86_64.*"
     amazon-2          = "^amzn2-ami-hvm-.*x86_64-gp2"
-    windows-2019-base = "^Windows_Server-2019-English-Full-Base-.*"
+    windows2019       = "^Windows_Server-2019-English-Full-Base-.*"
     windows2016       = "^Windows_Server-2016-English-Full-Base-.*"
     windows2012r2     = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
   }
