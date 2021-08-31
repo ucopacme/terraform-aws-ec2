@@ -55,11 +55,10 @@ inputs = {
   os                         = "windows2016"# List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2)
   enabled_ebs_volume         = false # Default is false, change it to true to add scondary ebs volume
   enable_ebs_volume_attachment = false # Default is false, change it to true to attach ebs volume to ec2 insance
-  # ami                          = "ami-0800fc0fa715fdcfe"
   instance_type          = "t2.micro" # Default type is t2.micro
-  subnet_id              = "subnet-084c56f1fd8699660"
+  subnet_id              = "subnet-xxxxxxx"
   vpc_security_group_ids       = [dependency.sg.outputs.id]
-  key_name               = "khalid-chsdev-key"
+  key_name               = "my-key"
   root_volume_size       = 50    # Default size is 100GB
   volume_type            = "gp3" # Default type is gp3
   ebs_volume_size        = 10    # Default null, adding secondary ebs
@@ -75,5 +74,5 @@ inputs = {
 }
 
 terraform {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git?ref=v0.0.4"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git?ref=v0.0.5"
 }
