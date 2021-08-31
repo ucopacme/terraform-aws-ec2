@@ -18,6 +18,25 @@ The module will create:
 ## Usage
 Create terragrunt.hcl config file, copy/past the following configuration.
 
+## Operating system selection
+
+|Operating system|
+|----------------|
+| amazon         |
+| amazon-2       |
+| centos7        | 
+| centos7        |
+| rhel6          |
+| rhel7          |
+| rhel8          |
+| ubuntu1804     |
+| ubuntu1810     |
+| ubuntu1904     |
+| windows2019    |
+| windows2016    |
+| windows2012r2  |
+
+
 ```hcl
 
 #
