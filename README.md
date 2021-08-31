@@ -51,9 +51,9 @@ include {
 #   config_path = "../sg"
 # }
 inputs = {
-  enabled                     = true # change it to false to destory the ec2 instance
-  os                          = "windows2016"# List of os(amazon,amazon-2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019, windows2016,windows2012r2
-  enabled_ebs_volume          = false # Default is false, change it to true to add scondary ebs volume
+  enabled                    = true # change it to false to destory the ec2 instance
+  os                         = "windows2016"# List of os(amazon,amazon-2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019, windows2016,windows2012r2)
+  enabled_ebs_volume         = false # Default is false, change it to true to add scondary ebs volume
   enable_ebs_volume_attachment = false # Default is false, change it to true to attach ebs volume to ec2 insance
   # ami                          = "ami-0800fc0fa715fdcfe"
   instance_type          = "t2.micro" # Default type is t2.micro
