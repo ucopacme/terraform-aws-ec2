@@ -74,5 +74,5 @@ inputs = {
 }
 
 terraform {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git?ref=v0.0.5"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git?ref=v0.0.7"
 }
