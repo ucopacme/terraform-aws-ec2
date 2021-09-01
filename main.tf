@@ -33,6 +33,9 @@ resource "aws_instance" "this" {
     volume_type = var.volume_type
 
   }
+  lifecycle {
+    ignore_changes = ["ami"]
+  }
 
 }
 
