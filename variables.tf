@@ -21,17 +21,47 @@ variable "enabled" {
   default     = "true"
 }
 
-variable "enabled_ebs_volume" {
+variable "root_volume_encryption" {
+  type        = bool
+  description = "Set to `false` to prevent encyption"
+  default     = true
+}
+variable "enabled_ebs_volume1" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = false
+}
+variable "enabled_ebs_volume2" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = false
+}
+variable "enabled_ebs_volume3" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = false
+}
+variable "enabled_ebs_volume4" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = false
+}
+variable "enabled_ebs_volume5" {
   type        = bool
   description = "Set to `false` to prevent the module from creating any resources"
   default     = false
 }
 
-variable "enable_ebs_volume_attachment" {
-  type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
-  default     = false
-}
+# variable "enable_ebs_volume1_attachment" {
+#   type        = bool
+#   description = "Set to `false` to prevent the module from creating any resources"
+#   default     = false
+# }
+# variable "enable_ebs_volume2_attachment" {
+#   type        = bool
+#   description = "Set to `false` to prevent the module from creating any resources"
+#   default     = false
+# }
 
 
 variable "instance_type" {
@@ -71,7 +101,27 @@ variable "root_volume_size" {
   default     = 100
 }
 
-variable "ebs_volume_size" {
+variable "ebs_volume1_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+variable "ebs_volume2_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+variable "ebs_volume3_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+variable "ebs_volume4_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+variable "ebs_volume5_size" {
   type        = number
   description = "size of ebs volume"
   default     = null
@@ -123,6 +173,11 @@ variable "disable_api_termination" {
   type        = bool
   default     = false
   description = "If true, enables EC2 Instance Termination Protection."
+}
+variable "user_data" {
+  type        = string
+  default     = ""
+  description = "(Optional) A string of the desired User Data for the ec2."
 }
 
 # AMI search
