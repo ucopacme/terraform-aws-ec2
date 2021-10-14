@@ -5,7 +5,7 @@ variable "ami" {
 }
 
 variable "associate_public_ip_address" {
-  default     = null
+  default     = false
   description = "(Optional) Associate a public ip address with an instance in a VPC. Boolean value."
   type        = bool
 }
