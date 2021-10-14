@@ -38,7 +38,7 @@ resource "aws_instance" "this" {
 
   }
   lifecycle {
-    ignore_changes = [ami,ebs_block_device,root_block_device]
+    ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
   }
 
 }
@@ -50,6 +50,9 @@ resource "aws_ebs_volume" "this" {
   type              = var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
 
 }
 
@@ -71,6 +74,9 @@ resource "aws_ebs_volume" "vol2" {
   type              = var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
 
 }
 
@@ -87,10 +93,13 @@ resource "aws_volume_attachment" "attachment2" {
 
 resource "aws_ebs_volume" "vol3" {
   count             = var.enabled_ebs_volume2 ? 1 : 0
-  size              = var.ebs_volume2_size
+  size              = var.ebs_volume3_size
   type              = var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
 
 }
 
@@ -111,6 +120,10 @@ resource "aws_ebs_volume" "vol4" {
   type              = var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
+ 
 
 }
 
@@ -131,6 +144,9 @@ resource "aws_ebs_volume" "vol5" {
   type              = var.volume_type
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
 
 }
 
