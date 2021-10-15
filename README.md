@@ -60,6 +60,7 @@ inputs = {
   root_volume_size       = 50    # Default size is 100GB
   root_volume_encryption = true  # Default is true, Change it to False to create unencrypted root volume
   volume_type            = "gp3" # Default type is gp3
+  enabled_eip            = false # Default is false ,chnage it to true to add EIP
   enabled_ebs_volume1    = false # Default is false, change it to true to add ebs volume 1 (device_name = "/dev/sdh")
   ebs_volume1_size       = 10    # Default null
   enabled_ebs_volume2    = false  # Default is false, change it to true to add ebs volume 2 (device_name = "/dev/sdf")
@@ -82,5 +83,5 @@ inputs = {
 }
 
 terraform {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.13"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.14"
 }

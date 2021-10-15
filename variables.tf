@@ -10,6 +10,12 @@ variable "associate_public_ip_address" {
   type        = bool
 }
 
+variable "enabled_eip" {
+  default     = false
+  description = "(Optional) Associate a public ip address with an instance in a VPC. Boolean value."
+  type        = bool
+}
+
 # variable "desc_sg" {
 #   description = "security group description"
 #   type        = string

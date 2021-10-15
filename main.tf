@@ -14,7 +14,7 @@ data "aws_ami" "search" {
   owners     = [length(var.amis_primary_owners) == 0 ? lookup(var.amis_os_map_owners, var.os) : var.amis_primary_owners]
 
 }
-
+# resource block for ec2 #
 resource "aws_instance" "this" {
   count                       = local.enabled ? 1 : 0
   ami                         = data.aws_ami.search.id
@@ -44,6 +44,21 @@ resource "aws_instance" "this" {
 }
 
 
+# resource block for eip #
+resource "aws_eip" "this" {
+  count    = var.enabled_eip ? 1 : 0
+  vpc      = true
+  tags     = var.tags
+}
+
+# resource block for ec2 and eip association #
+resource "aws_eip_association" "eip_assoc" {
+  count    = var.enabled_eip ? 1 : 0
+  instance_id   = aws_instance.this.*.id[0]
+  allocation_id = aws_eip.this.*.id[0]
+  
+}
+# resource block for ebs volumes #
 resource "aws_ebs_volume" "this" {
   count             = var.enabled_ebs_volume1 ? 1 : 0
   size              = var.ebs_volume1_size
