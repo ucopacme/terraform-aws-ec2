@@ -157,7 +157,7 @@ variable "vpc_security_group_ids" {
   default     = []
 }
 
-variable "aws_iam_instance_profile" {
+variable "instance_profile" {
   type        = string
   description = "(optional) describe your variable"
   default     = null
@@ -214,6 +214,8 @@ variable "amis_os_map_regex" {
     windows2019       = "^Windows_Server-2019-English-Full-Base-.*"
     windows2016       = "^Windows_Server-2016-English-Full-Base-.*"
     windows2012r2     = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
+    customlinux       = "custom-linux-ami*"
+    customwin         = "custom-win-ami*"
   }
 }
 
@@ -234,5 +236,8 @@ variable "amis_os_map_owners" {
     windows2019   = "801119661308" #amazon
     windows2016   = "801119661308" #amazon
     windows2012r2 = "801119661308" #amazon
+    customlinux       = "self"
+    customwin         = "self"
   }
 }
+

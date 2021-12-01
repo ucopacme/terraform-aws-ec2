@@ -14,6 +14,8 @@ data "aws_ami" "search" {
   owners     = [length(var.amis_primary_owners) == 0 ? lookup(var.amis_os_map_owners, var.os) : var.amis_primary_owners]
 
 }
+
+
 # resource block for ec2 #
 resource "aws_instance" "this" {
   count                       = local.enabled ? 1 : 0
@@ -21,7 +23,7 @@ resource "aws_instance" "this" {
   associate_public_ip_address = var.associate_public_ip_address
   disable_api_termination     = var.disable_api_termination
   ebs_optimized               = var.ebs_optimized
-  iam_instance_profile        = var.aws_iam_instance_profile
+  iam_instance_profile        = var.instance_profile
   instance_type               = var.instance_type
   monitoring                  = var.monitoring
   subnet_id                   = var.subnet_id
@@ -29,6 +31,7 @@ resource "aws_instance" "this" {
   vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
   user_data                   = var.user_data
+  
 
   root_block_device {
     volume_size = var.root_volume_size
@@ -38,7 +41,8 @@ resource "aws_instance" "this" {
 
   }
   lifecycle {
-    ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
+    # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
+    ignore_changes = [ami,ebs_block_device,associate_public_ip_address]
   }
 
 }
