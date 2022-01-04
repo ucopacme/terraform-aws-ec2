@@ -1,7 +1,7 @@
 variable "ami" {
   description = "Amazon Machine Image"
   type        = string
-  default     = ""
+  default     = "amazon2"
 }
 
 variable "associate_public_ip_address" {
@@ -154,7 +154,7 @@ variable "key_name" {
 variable "vpc_security_group_ids" {
   type        = list(string)
   description = "(optional) describe your variable"
-  default     = []
+  default     = null
 }
 
 variable "instance_profile" {
@@ -190,11 +190,12 @@ variable "user_data" {
 
 variable "os" {
   description = "The Os reference to search for"
+  # default     = ""
 }
 
 variable "amis_primary_owners" {
   description = "Force the ami Owner, could be (self) or specific (id)"
-  default     = ""
+  default     = "kkk"
 }
 
 variable "amis_os_map_regex" {
