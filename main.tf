@@ -2,6 +2,10 @@ locals {
   enabled = var.enabled == "true"
 }
 
+provider "aws" {
+  region     = var.region
+}
+
 data "aws_ami" "search" {
   most_recent = true
 

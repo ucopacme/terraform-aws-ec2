@@ -3,6 +3,11 @@ variable "ami" {
   type        = string
   default     = "amazon2"
 }
+variable "region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-west-2"
+}
 
 variable "associate_public_ip_address" {
   default     = false
