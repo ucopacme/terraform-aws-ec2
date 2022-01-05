@@ -200,7 +200,7 @@ variable "os" {
 
 variable "amis_primary_owners" {
   description = "Force the ami Owner, could be (self) or specific (id)"
-  default     = null
+  default     = "self"
 }
 
 variable "amis_os_map_regex" {
