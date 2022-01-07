@@ -222,6 +222,7 @@ variable "amis_os_map_regex" {
     windows2012r2     = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
     customlinux       = "custom-linux-ami*"
     customwin         = "custom-win-ami*"
+    customrhel7       = "custom-rhel7-ami*"
   }
 }
 
@@ -242,8 +243,9 @@ variable "amis_os_map_owners" {
     windows2019   = "801119661308" #amazon
     windows2016   = "801119661308" #amazon
     windows2012r2 = "801119661308" #amazon
-    customlinux       = "self"
-    customwin         = "self"
+    customlinux   = "self"
+    customwin     = "self"
+    customrhel7.  = "self"
   }
 }
 
