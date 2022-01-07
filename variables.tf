@@ -245,7 +245,7 @@ variable "amis_os_map_owners" {
     windows2012r2 = "801119661308" #amazon
     customlinux   = "self"
     customwin     = "self"
-    customrhel7.  = "self"
+    customrhel7   = "self"
   }
 }
 
