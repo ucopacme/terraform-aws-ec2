@@ -46,7 +46,7 @@ resource "aws_instance" "this" {
   }
   lifecycle {
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
-    ignore_changes = [ami,ebs_block_device,associate_public_ip_address]
+    ignore_changes = [ami,associate_public_ip_address]
   }
 
 }
