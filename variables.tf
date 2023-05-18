@@ -217,6 +217,7 @@ variable "amis_os_map_regex" {
     rhel7             = "^RHEL-7.*x86_64.*"
     rhel8             = "^RHEL-8.*x86_64.*"
     amazon2           = "^amzn2-ami-hvm-.*x86_64-gp2"
+    al2023            = "^al2023-ami-kernel-default-x86_64"
     windows2022       = "^Windows_Server-2022-English-Full-Base-.*"
     windows2019       = "^Windows_Server-2019-English-Full-Base-.*"
     windows2016       = "^Windows_Server-2016-English-Full-Base-.*"
@@ -241,6 +242,7 @@ variable "amis_os_map_owners" {
     centos8       = "679593333241"
     amazon        = "137112412989" #amazon
     amazon2       = "137112412989" #amazon
+    al2023        = "137112412989" #amazon
     windows2019   = "801119661308" #amazon
     windows2022   = "801119661308" #amazon
     windows2016   = "801119661308" #amazon
