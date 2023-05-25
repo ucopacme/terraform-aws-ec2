@@ -168,6 +168,12 @@ variable "instance_profile" {
   default     = null
 }
 
+variable "metadata_http_tokens" {
+  type        = string
+  description = "`required` to enforce IMDSv2, `optional` to allow IMDSv1"
+  default     = "required"
+}
+
 variable "ebs_optimized" {
   type        = bool
   default     = false
