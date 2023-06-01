@@ -60,7 +60,7 @@ resource "aws_instance" "this" {
 # resource block for eip #
 resource "aws_eip" "this" {
   count    = var.enabled_eip ? 1 : 0
-  vpc      = true
+  domain   = "vpc"
   tags     = var.tags
 }
 
