@@ -48,7 +48,10 @@ resource "aws_instance" "this" {
     ignore_changes = [ami,associate_public_ip_address]
   }
   metadata_options {
-    http_tokens = var.metadata_http_tokens
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 1
+    http_tokens                 = var.metadata_http_tokens
+    instance_metadata_tags      = "disabled"
   }
 
 }
