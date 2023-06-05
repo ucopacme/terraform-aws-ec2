@@ -60,7 +60,7 @@ resource "aws_instance" "this" {
 # resource block for eip #
 resource "aws_eip" "this" {
   count    = var.enabled_eip ? 1 : 0
-  domain   = "vpc"
+#  domain   = "vpc"
   tags     = var.tags
 }
 
@@ -81,7 +81,6 @@ resource "aws_ebs_volume" "this" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "this" {
@@ -92,9 +91,7 @@ resource "aws_volume_attachment" "this" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-
 }
-
 
 resource "aws_ebs_volume" "vol2" {
   count             = var.enabled_ebs_volume2 ? 1 : 0
@@ -105,7 +102,6 @@ resource "aws_ebs_volume" "vol2" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment2" {
@@ -116,7 +112,6 @@ resource "aws_volume_attachment" "attachment2" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-
 }
 
 resource "aws_ebs_volume" "vol3" {
@@ -128,7 +123,6 @@ resource "aws_ebs_volume" "vol3" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment3" {
@@ -139,7 +133,6 @@ resource "aws_volume_attachment" "attachment3" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-
 }
 
 resource "aws_ebs_volume" "vol4" {
@@ -151,7 +144,6 @@ resource "aws_ebs_volume" "vol4" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment4" {
@@ -162,7 +154,6 @@ resource "aws_volume_attachment" "attachment4" {
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
-
 }
 
 resource "aws_ebs_volume" "vol5" {
@@ -174,7 +165,6 @@ resource "aws_ebs_volume" "vol5" {
   lifecycle {
     ignore_changes = [availability_zone]
   }
-
 }
 
 resource "aws_volume_attachment" "attachment5" {
