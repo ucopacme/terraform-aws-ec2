@@ -117,6 +117,35 @@ variable "ebs_volume1_size" {
   description = "size of ebs volume"
   default     = null
 }
+
+variable "snapshot_id_volume1" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
+
+variable "snapshot_id_volume2" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
+variable "snapshot_id_volume3" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
+variable "snapshot_id_volume4" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
+variable "snapshot_id_volume5" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
+
+
 variable "ebs_volume2_size" {
   type        = number
   description = "size of ebs volume"
@@ -258,4 +287,3 @@ variable "amis_os_map_owners" {
     customrhel7   = "self"
   }
 }
-
