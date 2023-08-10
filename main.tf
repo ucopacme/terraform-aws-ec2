@@ -76,6 +76,7 @@ resource "aws_ebs_volume" "this" {
   count             = var.enabled_ebs_volume1 ? 1 : 0
   size              = var.ebs_volume1_size
   type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume1
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
   lifecycle {
@@ -97,6 +98,7 @@ resource "aws_ebs_volume" "vol2" {
   count             = var.enabled_ebs_volume2 ? 1 : 0
   size              = var.ebs_volume2_size
   type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume2
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
   lifecycle {
@@ -118,6 +120,7 @@ resource "aws_ebs_volume" "vol3" {
   count             = var.enabled_ebs_volume2 ? 1 : 0
   size              = var.ebs_volume3_size
   type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume3
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
   lifecycle {
@@ -139,6 +142,7 @@ resource "aws_ebs_volume" "vol4" {
   count             = var.enabled_ebs_volume4 ? 1 : 0
   size              = var.ebs_volume4_size
   type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume4
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
   lifecycle {
@@ -160,6 +164,7 @@ resource "aws_ebs_volume" "vol5" {
   count             = var.enabled_ebs_volume5 ? 1 : 0
   size              = var.ebs_volume5_size
   type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume5
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
   lifecycle {
@@ -176,4 +181,3 @@ resource "aws_volume_attachment" "attachment5" {
     ignore_changes = [instance_id,volume_id]
   }
 }
-
