@@ -21,22 +21,23 @@ The module will create:
 ## Operating system selection
 
 |Operating system|
-|----------------|
-| amazon         |
-| amazon2        |
-| centos7        | 
-| centos8        |
-| rhel6          |
-| rhel7          |
-| rhel8          |
-| ubuntu1804     |
-| ubuntu1810     |
-| ubuntu1904     |
-| windows2019    |
-| windows2016    |
-| windows2012r2  |
-| customlinux    |
-| customlwin    |
+|------------------- |
+| amazon             |
+| amazon2            |
+| centos7            | 
+| centos8            |
+| rhel6              |
+| rhel7              |
+| rhel8              |
+| ubuntu1804         |
+| ubuntu1810         |
+| ubuntu1904         |
+| windows2019        |
+| windows2019SQL2016E|
+| windows2016        |
+| windows2012r2      |
+| customlinux        |
+| customlwin         |
 
 
 ```hcl
@@ -53,9 +54,9 @@ provider "aws" {
 }
 
 module "ec2" {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.21"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.29"
   enabled                = true          # change it to false to destory the ec2 instance
-  os                     = "windows2016" # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2)
+  os                     = "windows2016" # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,windows2019SQL2016E)
   instance_type          = "r5.4xlarge"  # Default type is t2.micro
   subnet_id              = "subnet_id"
   vpc_security_group_ids = "security_group_ids"
@@ -63,7 +64,7 @@ module "ec2" {
   root_volume_size       = 150   # Default size is 100GB
   root_volume_encryption = true  # Default is true, Change it to False to create unencrypted root volume
   volume_type            = "gp3" # Default type is gp3
-  enabled_eip            = false # Default is false ,chnage it to true to add EIP
+  enabled_eip            = false # Default is false,  changee it to true to add EIP
   enabled_ebs_volume1    = true  # Default is false, change it to true to add ebs volume 1 (device_name = "/dev/sdh")
   ebs_volume1_size       = 50    # Default null
   enabled_ebs_volume2    = true  # Default is false, change it to true to add ebs volume 2 (device_name = "/dev/sdf")
