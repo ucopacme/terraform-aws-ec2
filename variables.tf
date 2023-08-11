@@ -243,23 +243,24 @@ variable "amis_os_map_regex" {
   type        = map
 
   default = {
-    ubuntu1804        = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
-    ubuntu1810        = "^ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-.*"
-    ubuntu1904        = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
-    centos7           = "CentOS.Linux.7.*x86_64.*"
-    centos8           = "CentOS.Linux.8.*x86_64.*"
-    rhel6             = "^RHEL-6.*x86_64.*"
-    rhel7             = "^RHEL-7.*x86_64.*"
-    rhel8             = "^RHEL-8.*x86_64.*"
-    amazon2           = "^amzn2-ami-hvm-.*x86_64-gp2"
-    al2023            = "^al2023-ami-kernel-default-x86_64"
-    windows2022       = "^Windows_Server-2022-English-Full-Base-.*"
-    windows2019       = "^Windows_Server-2019-English-Full-Base-.*"
-    windows2016       = "^Windows_Server-2016-English-Full-Base-.*"
-    windows2012r2     = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
-    customlinux       = "custom-linux-ami*"
-    customwin         = "custom-win-ami*"
-    customrhel7       = "custom-rhel7-ami*"
+    ubuntu1804          = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
+    ubuntu1810          = "^ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-.*"
+    ubuntu1904          = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
+    centos7             = "CentOS.Linux.7.*x86_64.*"
+    centos8             = "CentOS.Linux.8.*x86_64.*"
+    rhel6               = "^RHEL-6.*x86_64.*"
+    rhel7               = "^RHEL-7.*x86_64.*"
+    rhel8               = "^RHEL-8.*x86_64.*"
+    amazon2             = "^amzn2-ami-hvm-.*x86_64-gp2"
+    al2023              = "^al2023-ami-kernel-default-x86_64"
+    windows2022         = "^Windows_Server-2022-English-Full-Base-.*"
+    windows2019         = "^Windows_Server-2019-English-Full-Base-.*"
+    windows2019SQL2016E = "^Windows_Server-2019-English-Full-SQL_2016_SP3_Enterprise-.*"
+    windows2016         = "^Windows_Server-2016-English-Full-Base-.*"
+    windows2012r2       = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
+    customlinux         = "custom-linux-ami*"
+    customwin           = "custom-win-ami*"
+    customrhel7         = "custom-rhel7-ami*"
   }
 }
 
@@ -267,23 +268,24 @@ variable "amis_os_map_owners" {
   description = "Map of amis owner to filter only official amis"
   type        = map
   default = {
-    ubuntu1804    = "099720109477" #CANONICAL
-    ubuntu1810    = "099720109477" #CANONICAL
-    ubuntu1904    = "099720109477" #CANONICAL
-    rhel6         = "309956199498" #Amazon Web Services
-    rhel7         = "309956199498" #Amazon Web Services
-    rhel8         = "309956199498" #Amazon Web Services
-    centos7       = "679593333241"
-    centos8       = "679593333241"
-    amazon        = "137112412989" #amazon
-    amazon2       = "137112412989" #amazon
-    al2023        = "137112412989" #amazon
-    windows2019   = "801119661308" #amazon
-    windows2022   = "801119661308" #amazon
-    windows2016   = "801119661308" #amazon
-    windows2012r2 = "801119661308" #amazon
-    customlinux   = "self"
-    customwin     = "self"
-    customrhel7   = "self"
+    ubuntu1804          = "099720109477" #CANONICAL
+    ubuntu1810          = "099720109477" #CANONICAL
+    ubuntu1904          = "099720109477" #CANONICAL
+    rhel6               = "309956199498" #Amazon Web Services
+    rhel7               = "309956199498" #Amazon Web Services
+    rhel8               = "309956199498" #Amazon Web Services
+    centos7             = "679593333241"
+    centos8             = "679593333241"
+    amazon              = "137112412989" #amazon
+    amazon2             = "137112412989" #amazon
+    al2023              = "137112412989" #amazon
+    windows2019         = "801119661308" #amazon
+    windows2019SQL2016E = "801119661308" #amazon
+    windows2022         = "801119661308" #amazon
+    windows2016         = "801119661308" #amazon
+    windows2012r2       = "801119661308" #amazon
+    customlinux         = "self"
+    customwin           = "self"
+    customrhel7         = "self"
   }
 }
