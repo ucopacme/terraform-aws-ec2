@@ -64,17 +64,22 @@ module "ec2" {
   root_volume_size       = 150   # Default size is 100GB
   root_volume_encryption = true  # Default is true, Change it to False to create unencrypted root volume
   volume_type            = "gp3" # Default type is gp3
-  enabled_eip            = false # Default is false,  changee it to true to add EIP
+  enabled_eip            = false # Default is false ,chnage it to true to add EIP
   enabled_ebs_volume1    = true  # Default is false, change it to true to add ebs volume 1 (device_name = "/dev/sdh")
   ebs_volume1_size       = 50    # Default null
+  snapshot_id_volume1    = ""    # Default null
   enabled_ebs_volume2    = true  # Default is false, change it to true to add ebs volume 2 (device_name = "/dev/sdf")
   ebs_volume2_size       = 150   # Default null
+  snapshot_id_volume2    = ""    # Default null
   enabled_ebs_volume3    = true  # Default is false, change it to true to add ebs volume 3 (device_name = "/dev/sdj")
   ebs_volume3_size       = 150   # Default null
+  snapshot_id_volume3    = ""    # Default null
   enabled_ebs_volume4    = true  # Default is false, change it to true to add ebs volume 4 (device_name = "/dev/sdi")
   ebs_volume4_size       = 400   # Default null
+  snapshot_id_volume4    = ""    # Default null
   enabled_ebs_volume5    = false # Default is false, change it to true to add ebs volume 5 (device_name = "/dev/sdk")
   ebs_volume5_size       = 10    # Default null
+  snapshot_id_volume5    = ""    # Default nul
   tags = {
     "ucop:application" = "xxx"
     "ucop:createdBy"   = "terraform"
