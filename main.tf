@@ -181,3 +181,25 @@ resource "aws_volume_attachment" "attachment5" {
     ignore_changes = [instance_id,volume_id]
   }
 }
+
+resource "aws_ebs_volume" "vol6" {
+  count             = var.enabled_ebs_volume6 ? 1 : 0
+  size              = var.ebs_volume6_size
+  type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume6
+  availability_zone = aws_instance.this.*.availability_zone[0]
+  tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
+}
+
+resource "aws_volume_attachment" "attachment6" {
+  count       = var.enabled_ebs_volume6 ? 1 : 0
+  device_name = "/dev/sdl"
+  volume_id   = aws_ebs_volume.vol6.*.id[0]
+  instance_id = aws_instance.this.*.id[0]
+  lifecycle {
+    ignore_changes = [instance_id,volume_id]
+  }
+}
