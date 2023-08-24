@@ -63,6 +63,12 @@ variable "enabled_ebs_volume5" {
   default     = false
 }
 
+variable "enabled_ebs_volume6" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources"
+  default     = false
+}
+
 # variable "enable_ebs_volume1_attachment" {
 #   type        = bool
 #   description = "Set to `false` to prevent the module from creating any resources"
@@ -145,6 +151,11 @@ variable "snapshot_id_volume5" {
   default     = null
 }
 
+variable "snapshot_id_volume6" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
 
 variable "ebs_volume2_size" {
   type        = number
@@ -162,6 +173,12 @@ variable "ebs_volume4_size" {
   default     = null
 }
 variable "ebs_volume5_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+
+variable "ebs_volume6_size" {
   type        = number
   description = "size of ebs volume"
   default     = null
