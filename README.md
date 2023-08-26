@@ -21,10 +21,10 @@ The module will create:
 ## Operating system selection
 
 |Operating system|
-|------------------- |
+|--------------------|
 | amazon             |
 | amazon2            |
-| centos7            | 
+| centos7            |
 | centos8            |
 | rhel6              |
 | rhel7              |
@@ -43,7 +43,7 @@ The module will create:
 ```hcl
 
 #
-# 
+#
 
 # make sure you deploy the security group before creating ec2 instance, ec2 instance depends on the security group.
 
@@ -54,7 +54,7 @@ provider "aws" {
 }
 
 module "ec2" {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.29"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.30"
   enabled                = true          # change it to false to destory the ec2 instance
   os                     = "windows2016" # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,windows2019SQL2016E)
   instance_type          = "r5.4xlarge"  # Default type is t2.micro
@@ -79,7 +79,7 @@ module "ec2" {
   snapshot_id_volume4    = ""    # Default null
   enabled_ebs_volume5    = false # Default is false, change it to true to add ebs volume 5 (device_name = "/dev/sdk")
   ebs_volume5_size       = 10    # Default null
-  snapshot_id_volume5    = ""    # Default nul
+  snapshot_id_volume5    = ""    # Default null
   tags = {
     "ucop:application" = "xxx"
     "ucop:createdBy"   = "terraform"
