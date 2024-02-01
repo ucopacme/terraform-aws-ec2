@@ -29,6 +29,7 @@ The module will create:
 | rhel6              |
 | rhel7              |
 | rhel8              |
+| rhel9              |
 | ubuntu1804         |
 | ubuntu1810         |
 | ubuntu1904         |
@@ -56,7 +57,7 @@ provider "aws" {
 module "ec2" {
   source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.30"
   enabled                = true          # change it to false to destory the ec2 instance
-  os                     = "windows2016" # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,windows2019SQL2016E)
+  os                     = "windows2016" # List of os(amazon,amazon2,centos7,centos8,rhel6,rhel7,rhel8,rhel9,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,windows2019SQL2016E)
   instance_type          = "r5.4xlarge"  # Default type is t2.micro
   subnet_id              = "subnet_id"
   vpc_security_group_ids = "security_group_ids"
