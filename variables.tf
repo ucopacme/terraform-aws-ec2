@@ -1,7 +1,7 @@
 variable "ami" {
   description = "Amazon Machine Image"
   type        = string
-  default     = "amazon2"
+  default     = "al2023"
 }
 variable "region" {
   description = "AWS region"
@@ -295,7 +295,6 @@ variable "amis_os_map_owners" {
     rhel9               = "309956199498" #Amazon Web Services
     centos7             = "679593333241"
     centos8             = "679593333241"
-    amazon              = "137112412989" #amazon
     amazon2             = "137112412989" #amazon
     al2023              = "137112412989" #amazon
     windows2019         = "801119661308" #amazon
