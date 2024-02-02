@@ -4,7 +4,7 @@ locals {
     var.memory_gb != null ? min([for k, v in var.ec2_instance_map : k if contains(keys(v), tostring(var.memory_gb))]...) : 2
   )
   memory_gb = coalesce(var.memory_gb,
-    var.vcpu_count != null ? min(keys(lookup(var.ec2_instance_map, var.vcpu_count, {}))...) : 4
+    var.vcpu_count != null ? min(keys(lookup(var.ec2_instance_map, var.vcpu_count, {}))...) : 1
   )
   instance_type = coalesce(var.instance_type,
     lookup(lookup(var.ec2_instance_map, local.vcpu_count, {}), local.memory_gb, "")
