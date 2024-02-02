@@ -82,7 +82,7 @@ variable "enabled_ebs_volume6" {
 
 
 variable "instance_type" {
-  default     = "t2.micro"
+  default     = null
   description = "instance_type"
   type        = string
 }
@@ -243,6 +243,18 @@ variable "user_data" {
   description = "(Optional) A string of the desired User Data for the ec2."
 }
 
+variable "vcpu_count" {
+  type        = number
+  description = "Number of desired vCPUs (used to auto-select instance type from ec2_instance_map)"
+  default     = null
+}
+
+variable "memory_gb" {
+  type        = number
+  description = "GB of desired memory (used to auto-select instance type from ec2_instance_map)"
+  default     = null
+}
+
 # AMI search
 
 variable "os" {
@@ -257,7 +269,7 @@ variable "amis_primary_owners" {
 
 variable "amis_os_map_regex" {
   description = "Map of regex to search amis"
-  type        = map
+  type        = map(any)
 
   default = {
     ubuntu1804          = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
@@ -284,7 +296,7 @@ variable "amis_os_map_regex" {
 
 variable "amis_os_map_owners" {
   description = "Map of amis owner to filter only official amis"
-  type        = map
+  type        = map(any)
   default = {
     ubuntu1804          = "099720109477" #CANONICAL
     ubuntu1810          = "099720109477" #CANONICAL
@@ -305,5 +317,36 @@ variable "amis_os_map_owners" {
     customlinux         = "self"
     customwin           = "self"
     customrhel7         = "self"
+  }
+}
+
+variable "ec2_instance_map" {
+  description = "Map of EC2 instance type/sizes based on vCPU, memory"
+  type        = map(any)
+
+  default = {
+    2 = {
+      1  = "t3a.micro"
+      2  = "t3a.small"
+      4  = "t3a.medium"
+      8  = "t3a.large"
+      16 = "r7a.large"
+    }
+    4 = {
+      16 = "t3a.xlarge"
+      32 = "r7a.xlarge"
+    }
+    8 = {
+      32 = "t3a.2xlarge"
+      64 = "r7a.2xlarge"
+    }
+    16 = {
+      64  = "m7i-flex.4xlarge"
+      128 = "r7a.4xlarge"
+    }
+    32 = {
+      128 = "m7i-flex.8xlarge"
+      256 = "r7a.8xlarge"
+    }
   }
 }

@@ -1,5 +1,14 @@
 locals {
   enabled = var.enabled == "true"
+  vcpu_count = coalesce(var.vcpu_count,
+    var.memory_gb != null ? min([for k, v in var.ec2_instance_map : k if contains(keys(v), var.memory_gb)]...) : 2
+  )
+  memory_gb = coalesce(var.memory_gb,
+    var.vcpu_count != null ? min(keys(lookup(var.ec2_instance_map, var.vcpu_count, {}))...) : 4
+  )
+  instance_type = coalesce(var.instance_type,
+    lookup(lookup(var.ec2_instance_map, local.vcpu_count, {}), local.memory_gb, "")
+  )
 }
 
 #provider "aws" {
@@ -16,7 +25,6 @@ data "aws_ami" "search" {
 
   name_regex = lookup(var.amis_os_map_regex, var.os)
   owners     = [length(var.amis_primary_owners) == 0 ? lookup(var.amis_os_map_owners, var.os) : var.amis_primary_owners]
-
 }
 
 
@@ -28,7 +36,7 @@ resource "aws_instance" "this" {
   disable_api_termination     = var.disable_api_termination
   ebs_optimized               = var.ebs_optimized
   iam_instance_profile        = var.instance_profile
-  instance_type               = var.instance_type
+  instance_type               = local.instance_type
   monitoring                  = var.monitoring
   subnet_id                   = var.subnet_id
   tags                        = var.tags
