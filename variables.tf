@@ -322,7 +322,7 @@ variable "amis_os_map_owners" {
 
 variable "ec2_instance_map" {
   description = "Map of EC2 instance type/sizes based on vCPU, memory"
-  type        = map(any)
+  type        = map(map(string))
 
   default = {
     2 = {

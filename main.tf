@@ -1,7 +1,7 @@
 locals {
   enabled = var.enabled == "true"
   vcpu_count = coalesce(var.vcpu_count,
-    var.memory_gb != null ? min([for k, v in var.ec2_instance_map : k if contains(keys(v), var.memory_gb)]...) : 2
+    var.memory_gb != null ? min([for k, v in var.ec2_instance_map : k if contains(keys(v), tostring(var.memory_gb))]...) : 2
   )
   memory_gb = coalesce(var.memory_gb,
     var.vcpu_count != null ? min(keys(lookup(var.ec2_instance_map, var.vcpu_count, {}))...) : 4
