@@ -16,7 +16,7 @@ The module will create:
 
 
 ## Usage
-1. Create main.tf config file, copy/past the following configuration.
+1. Create main.tf config file, copy/paste and customize the following configuration.
 
 ## Operating system selection
 
@@ -40,6 +40,13 @@ The module will create:
 | customlinux        |
 | customlwin         |
 
+## Instance type and size selection
+
+Specifying values for vcpu\_count and memory\_gb will auto-select a preferred instance type and size.  If a value for only one of these two variables is provided, the minimum possible value will be used for the other (example: setting memory\_gb = 1 without providing a value for vcpu\_count will implicitly set vcpu\_count to 2, corresponding to 2 vCPU, 1 GB memory micro size).
+
+Note that not all vcpu\_count and memory\_gb combinations are valid.  For example, there is not an instance type with 16 vCPUs and 1 GB memory.
+
+For cases requiring a certain instance type, provide a specific value for the instance\_type variable.  This will preclude any values provided for vcpu\_count or memory\_gb, which will be ignored.
 
 ```hcl
 
@@ -55,10 +62,11 @@ provider "aws" {
 }
 
 module "ec2" {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.30"
-  enabled                = true          # change it to false to destory the ec2 instance
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.31"
+  enabled                = true          # change it to false to destroy the ec2 instance
   os                     = "windows2016" # List of os(al2023,amazon2,centos7,centos8,rhel6,rhel7,rhel8,rhel9,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2012r2,windows2019SQL2016E)
-  instance_type          = "r5.4xlarge"  # Default type is t2.micro
+  vcpu_count             = 2     # Choices are 2,4,8,16,32
+  memory_gb              = 4     # Choices are 1,2,4,8,16,32,64,128,256
   subnet_id              = "subnet_id"
   vpc_security_group_ids = "security_group_ids"
   key_name               = "xxxx" # enter the key name
@@ -92,7 +100,7 @@ module "ec2" {
   }
 }
 
-2. Create output.tf config file, copy/past the following configuration.
+2. Create output.tf config file, copy/paste the following configuration.
 
 output "instance_name" {
 description = "The tag name for this instance"

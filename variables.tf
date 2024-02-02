@@ -247,12 +247,26 @@ variable "vcpu_count" {
   type        = number
   description = "Number of desired vCPUs (used to auto-select instance type from ec2_instance_map)"
   default     = null
+  validation {
+    condition = contains(
+      [1, 2, 4, 8, 16, 32],
+      var.vcpu_count
+    )
+    error_message = "var.vcpu_count is not valid, choices are: 1,2,4,8,16,32."
+  }
 }
 
 variable "memory_gb" {
   type        = number
   description = "GB of desired memory (used to auto-select instance type from ec2_instance_map)"
   default     = null
+  validation {
+    condition = contains(
+      [1, 2, 4, 8, 16, 32, 64, 128, 256],
+      var.memory_gb
+    )
+    error_message = "var.memory_gb is not valid, choices are: 1,2,4,8,16,32,64,128,256."
+  }
 }
 
 # AMI search
