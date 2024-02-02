@@ -249,10 +249,10 @@ variable "vcpu_count" {
   default     = null
   validation {
     condition = var.vcpu_count == null ? true : contains(
-      [1, 2, 4, 8, 16, 32],
+      [2, 4, 8, 16, 32],
       var.vcpu_count
     )
-    error_message = "var.vcpu_count is not valid, choices are: 1,2,4,8,16,32."
+    error_message = "var.vcpu_count is not valid, choices are: 2,4,8,16,32."
   }
 }
 
