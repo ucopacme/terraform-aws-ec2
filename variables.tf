@@ -248,7 +248,7 @@ variable "vcpu_count" {
   description = "Number of desired vCPUs (used to auto-select instance type from ec2_instance_map)"
   default     = null
   validation {
-    condition = contains(
+    condition = var.vcpu_count == null ? true : contains(
       [1, 2, 4, 8, 16, 32],
       var.vcpu_count
     )
@@ -261,7 +261,7 @@ variable "memory_gb" {
   description = "GB of desired memory (used to auto-select instance type from ec2_instance_map)"
   default     = null
   validation {
-    condition = contains(
+    condition = var.memory_gb == null ? true : contains(
       [1, 2, 4, 8, 16, 32, 64, 128, 256],
       var.memory_gb
     )
