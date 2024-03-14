@@ -346,6 +346,7 @@ variable "base_user_data" {
             cd /tmp
             sudo dnf install -y python3
             sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo dnf install -y https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect.rpm https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect-selinux.noarch.rpm
             sudo systemctl enable amazon-ssm-agent
             sudo systemctl start amazon-ssm-agent
           EOF
@@ -354,6 +355,7 @@ variable "base_user_data" {
             cd /tmp
             sudo dnf install -y python3
             sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo dnf install -y https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect.rpm https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect-selinux.noarch.rpm
             sudo systemctl enable amazon-ssm-agent
             sudo systemctl start amazon-ssm-agent
           EOF
