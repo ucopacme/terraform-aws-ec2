@@ -11,6 +11,20 @@ locals {
   )
 }
 
+# user_data including a base value for given var.os, and also var.user_data.
+data "cloudinit_config" "this" {
+  dynamic "part" {
+    for_each = [
+      contains(keys(var.base_user_data), var.os) ? var.base_user_data[var.os] : "",
+      var.user_data
+    ]
+    content {
+      content_type = "text/x-shellscript"
+      content      = part.value
+    }
+  }
+}
+
 #provider "aws" {
  # region     = var.region
 #}
@@ -42,7 +56,7 @@ resource "aws_instance" "this" {
   tags                        = var.tags
   vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
-  user_data                   = var.user_data
+  user_data                   = data.cloudinit_config.this.rendered
 
 
   root_block_device {

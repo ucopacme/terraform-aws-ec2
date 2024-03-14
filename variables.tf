@@ -368,3 +368,27 @@ variable "ec2_instance_map" {
     }
   }
 }
+
+variable "base_user_data" {
+  description = "Map of base user_data to run for a given OS string"
+  type        = map(string)
+
+  default = {
+    rhel8 = <<-EOF
+            #!/bin/bash
+            cd /tmp
+            sudo dnf install -y python3
+            sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+          EOF
+    rhel9 = <<-EOF
+            #!/bin/bash
+            cd /tmp
+            sudo dnf install -y python3
+            sudo dnf install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+          EOF
+  }
+}
