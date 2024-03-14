@@ -1,7 +1,7 @@
 variable "ami" {
   description = "Amazon Machine Image"
   type        = string
-  default     = "al2023"
+  default     = ""
 }
 variable "region" {
   description = "AWS region"
@@ -272,8 +272,8 @@ variable "memory_gb" {
 # AMI search
 
 variable "os" {
-  description = "The Os reference to search for"
-  # default     = ""
+  description = "The OS reference to search for"
+  default     = "al2023"
 }
 
 variable "amis_primary_owners" {
