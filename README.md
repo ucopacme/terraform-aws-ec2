@@ -69,7 +69,6 @@ module "ec2" {
   memory_gb              = 4        # Choices are 1,2,4,8,16,32,64,128,256
   subnet_id              = "subnet_id"
   vpc_security_group_ids = "security_group_ids"
-  key_name               = "xxxx"   # enter the key name
   root_volume_size       = 150   # Default size is 100GB
   root_volume_encryption = true  # Default is true, change it to false to create unencrypted root volume
   volume_type            = "gp3" # Default type is gp3
