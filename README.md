@@ -38,7 +38,7 @@ The module will create:
 | windows2016        |
 | windows2012r2      |
 | customlinux        |
-| customlwin         |
+| customwin          |
 
 The os variable is used to auto-select an appropriate latest Amazon Machine Image (ami) corresponding to the OS.
 
