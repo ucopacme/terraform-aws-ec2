@@ -25,10 +25,6 @@ data "cloudinit_config" "this" {
   }
 }
 
-#provider "aws" {
- # region     = var.region
-#}
-
 data "aws_ami" "search" {
   most_recent = true
 
