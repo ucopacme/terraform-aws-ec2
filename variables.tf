@@ -1,12 +1,7 @@
 variable "ami" {
-  description = "Amazon Machine Image"
+  description = "(Optional) Amazon Machine Image"
   type        = string
   default     = ""
-}
-variable "region" {
-  description = "AWS region"
-  type        = string
-  default     = "us-west-2"
 }
 
 variable "associate_public_ip_address" {
@@ -21,11 +16,6 @@ variable "enabled_eip" {
   type        = bool
 }
 
-# variable "desc_sg" {
-#   description = "security group description"
-#   type        = string
-# }
-
 variable "enabled" {
   type        = string
   description = "Set to `false` to prevent the module from creating any resources"
@@ -37,60 +27,47 @@ variable "root_volume_encryption" {
   description = "Set to `false` to prevent encyption"
   default     = true
 }
+
 variable "enabled_ebs_volume1" {
   type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
 }
+
 variable "enabled_ebs_volume2" {
   type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
 }
+
 variable "enabled_ebs_volume3" {
   type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
 }
+
 variable "enabled_ebs_volume4" {
   type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
 }
+
 variable "enabled_ebs_volume5" {
   type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
 }
 
 variable "enabled_ebs_volume6" {
   type        = bool
-  description = "Set to `false` to prevent the module from creating any resources"
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
 }
-
-# variable "enable_ebs_volume1_attachment" {
-#   type        = bool
-#   description = "Set to `false` to prevent the module from creating any resources"
-#   default     = false
-# }
-# variable "enable_ebs_volume2_attachment" {
-#   type        = bool
-#   description = "Set to `false` to prevent the module from creating any resources"
-#   default     = false
-# }
-
 
 variable "instance_type" {
   default     = null
   description = "instance_type"
   type        = string
-}
-
-variable "name_ec2" {
-  description = "ec2 name"
-  type        = string
-  default     = ""
 }
 
 variable "subnet_id" {
@@ -105,23 +82,10 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "vpc_id" {
-  description = "VPC Id"
-  type        = string
-  default     = ""
-}
-
-
 variable "root_volume_size" {
   type        = number
   description = "Size of the root volume in gigabytes"
   default     = 100
-}
-
-variable "ebs_volume1_size" {
-  type        = number
-  description = "size of ebs volume"
-  default     = null
 }
 
 variable "snapshot_id_volume1" {
@@ -135,16 +99,19 @@ variable "snapshot_id_volume2" {
   description = "snapshot ID of the volume"
   default     = null
 }
+
 variable "snapshot_id_volume3" {
   type        = string
   description = "snapshot ID of the volume"
   default     = null
 }
+
 variable "snapshot_id_volume4" {
   type        = string
   description = "snapshot ID of the volume"
   default     = null
 }
+
 variable "snapshot_id_volume5" {
   type        = string
   description = "snapshot ID of the volume"
@@ -154,6 +121,12 @@ variable "snapshot_id_volume5" {
 variable "snapshot_id_volume6" {
   type        = string
   description = "snapshot ID of the volume"
+  default     = null
+}
+
+variable "ebs_volume1_size" {
+  type        = number
+  description = "size of ebs volume"
   default     = null
 }
 
@@ -190,12 +163,6 @@ variable "volume_type" {
   default     = "gp3"
 }
 
-variable "role_name" {
-  type    = string
-  default = ""
-
-}
-
 variable "key_name" {
   type        = string
   description = "EC2 key"
@@ -204,13 +171,13 @@ variable "key_name" {
 
 variable "vpc_security_group_ids" {
   type        = list(string)
-  description = "(optional) describe your variable"
+  description = "Security group IDs to associate with the EC2"
   default     = null
 }
 
 variable "instance_profile" {
   type        = string
-  description = "(optional) describe your variable"
+  description = "IAM instance profile to associate with the EC2"
   default     = null
 }
 
