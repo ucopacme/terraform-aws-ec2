@@ -40,6 +40,10 @@ The module will create:
 | customlinux        |
 | customlwin         |
 
+The os variable is used to auto-select an appropriate latest Amazon Machine Image (ami) corresponding to the OS.
+
+For cases requiring a certain ami, provide a specific value for the ami variable.  This will preclude any values provided for the os variable, which will be ignored.
+
 ## Instance type and size selection
 
 Specifying values for vcpu\_count and memory\_gb will auto-select a preferred instance type and size.  If a value for only one of these two variables is provided, the minimum possible value will be used for the other (example: setting memory\_gb = 1 without providing a value for vcpu\_count will implicitly set vcpu\_count to 2, corresponding to 2 vCPU, 1 GB memory micro size).
