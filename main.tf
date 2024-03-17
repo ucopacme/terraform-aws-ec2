@@ -29,7 +29,7 @@ locals {
   # Otherwise (for Windows), use var.user_data if defined, else var.base_user_data.
   # (Ideal to-do: find a way to do merged var.user_data and base_user_data on Windows).
   user_data = length(regexall("^windows", var.os)) == 0 ? data.cloudinit_config.this.rendered : (
-    (contains(keys(var.base_user_data), var.os) && var.user_data == "") ? var.base_user_data : var.user_data
+    (contains(keys(var.base_user_data), var.os) && var.user_data == "") ? var.base_user_data[var.os] : var.user_data
   )
 }
 
