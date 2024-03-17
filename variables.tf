@@ -395,5 +395,23 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
+    windows2016 = <<-EOF
+                  <powershell>
+                  msiexec /i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn
+                  & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  </powershell>
+                EOF
+    windows2019 = <<-EOF
+                  <powershell>
+                  msiexec /i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn
+                  & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  </powershell>
+                EOF
+    windows2022 = <<-EOF
+                  <powershell>
+                  msiexec /i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn
+                  & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  </powershell>
+                EOF
   }
 }
