@@ -103,7 +103,7 @@ module "ec2" {
   }
 }
 
-2. Create output.tf config file, copy/paste the following configuration.
+2. (Optional) create outputs.tf config file, copy/paste the following configuration.
 
 output "instance_name" {
 description = "The tag name for this instance"
