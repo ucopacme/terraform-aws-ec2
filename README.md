@@ -66,11 +66,13 @@ provider "aws" {
 }
 
 module "ec2" {
-  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.32"
+  source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.33"
   enabled                = true     # change it to false to destroy the ec2 instance
   os                     = "al2023" # List of os(al2023,amazon2,rhel7,rhel8,rhel9,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016,windows2019SQL2016E)
   vcpu_count             = 2        # Choices are 2,4,8,16,32
   memory_gb              = 4        # Choices are 1,2,4,8,16,32,64,128,256
+  core_count             = ""       # default set to Null, Set customized CPU core count
+  threads_per_core       = ""       # default set to Null, Set customized threads per core
   subnet_id              = "subnet_id"
   vpc_security_group_ids = "security_group_ids"
   root_volume_size       = 150   # Default size is 100GB
