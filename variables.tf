@@ -10,6 +10,18 @@ variable "associate_public_ip_address" {
   type        = bool
 }
 
+variable "core_count" {
+  type        = number
+  description = "custom vcpu count"
+  default     = null
+}
+
+variable "threads_per_core" {
+  type        = number
+  description = "custom threads count"
+  default     = null
+}
+
 variable "enabled_eip" {
   default     = false
   description = "(Optional) Associate a public ip address with an instance in a VPC. Boolean value."
