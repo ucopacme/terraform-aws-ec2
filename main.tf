@@ -61,6 +61,10 @@ resource "aws_instance" "this" {
   vpc_security_group_ids      = var.vpc_security_group_ids
   key_name                    = var.key_name
   user_data                   = local.user_data
+  cpu_options {
+    core_count       = var.core_count
+    threads_per_core = var.threads_per_core
+  }
 
 
   root_block_device {
