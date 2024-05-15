@@ -25,7 +25,7 @@ data "aws_security_groups" "fms_security_groups_common_usw2" {
 
   filter {
     name   = "vpc-id"
-    values = data.aws_subnet.subnet.vpc_id
+    values = [data.aws_subnet.subnet.vpc_id]
   }
 }
 
