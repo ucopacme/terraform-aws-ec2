@@ -272,7 +272,7 @@ variable "amis_os_map_regex" {
     centos8             = "CentOS.Linux.8.*x86_64.*"
     rhel6               = "^RHEL-6.*x86_64.*"
     rhel7               = "^RHEL-7.*x86_64.*"
-    rhel8               = "^RHEL-8.9.*x86_64.*"
+    rhel8               = "^RHEL-8.10.*x86_64.*"
     rhel9               = "^RHEL-9.*x86_64.*"
     amazon2             = "^amzn2-ami-hvm-.*x86_64-gp2"
     al2023              = "^al2023-ami-2023.*x86_64"
