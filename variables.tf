@@ -323,7 +323,7 @@ variable "ec2_instance_map" {
       2  = "t3a.small"
       4  = "t3a.medium"
       8  = "t3a.large"
-      16 = "r7a.large"
+      16 = "r7i.large"
     }
     4 = {
       8  = "c7i.xlarge"
