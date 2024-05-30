@@ -425,18 +425,105 @@ variable "base_user_data" {
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  ## Get token on every boot
+                  $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
+
+                  ## gets hostname from metadata
+                  $instance_id = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
+                  Write-Host "$instance_id"
+                  If (-not(test-path -Path c:\temp)){new-item -ItemType Directory -Path "c:\temp"}
+
+                  ## change hostname if necessary
+                  if ((hostname) -ne $instance_id){rename-computer -newName $instance_id -restart}
+
+                  ## Silently install AWS PowerShell module
+                  If(-not(Get-InstalledModule AWS.Tools.Installer -ErrorAction silentlycontinue)){
+                      Install-PackageProvider -Name NuGet -Force
+                      Set-PSRepository PSGallery -InstallationPolicy Trusted
+                      Install-Module AWS.Tools.Installer -Confirm:$False -Force
+                  }
+
+                  ## Install Rapid7
+                  read-S3Object -BucketName ec2-bootstrap-905418358248 -Key agentInstaller-x86_64.msi -SessionToken $token -file c:\temp\agentInstaller-x86_64.msi
+                  $key = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty rapid7
+                  msiexec /i "c:\temp\agentInstaller-x86_64" /quiet /qn /norestart /log c:\temp\install.log CUSTOMTOKEN=$key
+
+                  Start-Sleep -Seconds 120
+
+                  ## Install FireEye
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key IMAGE_HX_AGENT_WIN_35.31.22/xagtSetup_35.31.22_universal.msi -file c:\temp\xagtSetup_35.31.22_universal.msi
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key IMAGE_HX_AGENT_WIN_35.31.22/agent_config.json -file c:\temp\agent_config.json
+                  msiexec /i "C:\temp\xagtSetup_35.31.22_universal.msi" /quiet /qn /norestart /log c:\temp\install.log
                   </powershell>
                 EOF
     windows2019 = <<-EOF
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  ## Get token on every boot
+                  $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
+
+                  ## gets hostname from metadata
+                  $instance_id = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
+                  Write-Host "$instance_id"
+                  If (-not(test-path -Path c:\temp)){new-item -ItemType Directory -Path "c:\temp"}
+
+                  ## change hostname if necessary
+                  if ((hostname) -ne $instance_id){rename-computer -newName $instance_id -restart}
+
+                  ## Silently install AWS PowerShell module
+                  If(-not(Get-InstalledModule AWS.Tools.Installer -ErrorAction silentlycontinue)){
+                      Install-PackageProvider -Name NuGet -Force
+                      Set-PSRepository PSGallery -InstallationPolicy Trusted
+                      Install-Module AWS.Tools.Installer -Confirm:$False -Force
+                  }
+
+                  ## Install Rapid7
+                  read-S3Object -BucketName ec2-bootstrap-905418358248 -Key agentInstaller-x86_64.msi -SessionToken $token -file c:\temp\agentInstaller-x86_64.msi
+                  $key = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty rapid7
+                  msiexec /i "c:\temp\agentInstaller-x86_64" /quiet /qn /norestart /log c:\temp\install.log CUSTOMTOKEN=$key
+
+                  Start-Sleep -Seconds 120
+
+                  ## Install FireEye
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key IMAGE_HX_AGENT_WIN_35.31.22/xagtSetup_35.31.22_universal.msi -file c:\temp\xagtSetup_35.31.22_universal.msi
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key IMAGE_HX_AGENT_WIN_35.31.22/agent_config.json -file c:\temp\agent_config.json
+                  msiexec /i "C:\temp\xagtSetup_35.31.22_universal.msi" /quiet /qn /norestart /log c:\temp\install.log
                   </powershell>
                 EOF
     windows2022 = <<-EOF
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  ## Get token on every boot
+                  $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
+
+                  ## gets hostname from metadata
+                  $instance_id = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
+                  Write-Host "$instance_id"
+                  If (-not(test-path -Path c:\temp)){new-item -ItemType Directory -Path "c:\temp"}
+
+                  ## change hostname if necessary
+                  if ((hostname) -ne $instance_id){rename-computer -newName $instance_id -restart}
+
+                  ## Silently install AWS PowerShell module
+                  If(-not(Get-InstalledModule AWS.Tools.Installer -ErrorAction silentlycontinue)){
+                      Install-PackageProvider -Name NuGet -Force
+                      Set-PSRepository PSGallery -InstallationPolicy Trusted
+                      Install-Module AWS.Tools.Installer -Confirm:$False -Force
+                  }
+
+                  ## Install Rapid7
+                  read-S3Object -BucketName ec2-bootstrap-905418358248 -Key agentInstaller-x86_64.msi -SessionToken $token -file c:\temp\agentInstaller-x86_64.msi
+                  $key = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty rapid7
+                  msiexec /i "c:\temp\agentInstaller-x86_64" /quiet /qn /norestart /log c:\temp\install.log CUSTOMTOKEN=$key
+
+                  Start-Sleep -Seconds 120
+
+                  ## Install FireEye
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key IMAGE_HX_AGENT_WIN_35.31.22/xagtSetup_35.31.22_universal.msi -file c:\temp\xagtSetup_35.31.22_universal.msi
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key IMAGE_HX_AGENT_WIN_35.31.22/agent_config.json -file c:\temp\agent_config.json
+                  msiexec /i "C:\temp\xagtSetup_35.31.22_universal.msi" /quiet /qn /norestart /log c:\temp\install.log
                   </powershell>
                 EOF
   }
