@@ -199,6 +199,12 @@ variable "metadata_http_tokens" {
   default     = "required"
 }
 
+variable "instance_metadata_tags" {
+  type        = string
+  description = "`enabled` to allow access to instance tags in instance metadata"
+  default     = "enabled"
+}
+
 variable "ebs_optimized" {
   type        = bool
   default     = true
