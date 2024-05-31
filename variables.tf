@@ -435,12 +435,12 @@ variable "base_user_data" {
                   $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
 
                   ## gets hostname from metadata
-                  $instance_id = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
-                  Write-Host "$instance_id"
+                  $name_tag = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
+                  Write-Host "$name_tag"
                   If (-not(test-path -Path c:\temp)){new-item -ItemType Directory -Path "c:\temp"}
 
                   ## change hostname if necessary
-                  if ((hostname) -ne $instance_id){rename-computer -newName $instance_id -restart}
+                  if ((hostname) -ne $name_tag){rename-computer -newName $name_tag -restart}
 
                   ## Silently install AWS PowerShell module
                   If(-not(Get-InstalledModule AWS.Tools.Installer -ErrorAction silentlycontinue)){
@@ -470,12 +470,12 @@ variable "base_user_data" {
                   $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
 
                   ## gets hostname from metadata
-                  $instance_id = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
-                  Write-Host "$instance_id"
+                  $name_tag = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
+                  Write-Host "$name_tag"
                   If (-not(test-path -Path c:\temp)){new-item -ItemType Directory -Path "c:\temp"}
 
                   ## change hostname if necessary
-                  if ((hostname) -ne $instance_id){rename-computer -newName $instance_id -restart}
+                  if ((hostname) -ne $name_tag){rename-computer -newName $name_tag -restart}
 
                   ## Silently install AWS PowerShell module
                   If(-not(Get-InstalledModule AWS.Tools.Installer -ErrorAction silentlycontinue)){
@@ -505,12 +505,12 @@ variable "base_user_data" {
                   $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
 
                   ## gets hostname from metadata
-                  $instance_id = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
-                  Write-Host "$instance_id"
+                  $name_tag = Invoke-RestMethod -Method Get -Uri http://169.254.169.254/latest/meta-data/tags/instance/Name -Headers @{"X-aws-ec2-metadata-token" = $token}
+                  Write-Host "$name_tag"
                   If (-not(test-path -Path c:\temp)){new-item -ItemType Directory -Path "c:\temp"}
 
                   ## change hostname if necessary
-                  if ((hostname) -ne $instance_id){rename-computer -newName $instance_id -restart}
+                  if ((hostname) -ne $name_tag){rename-computer -newName $name_tag -restart}
 
                   ## Silently install AWS PowerShell module
                   If(-not(Get-InstalledModule AWS.Tools.Installer -ErrorAction silentlycontinue)){
