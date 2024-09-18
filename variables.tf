@@ -431,6 +431,7 @@ variable "base_user_data" {
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+
                   ## Get token on every boot
                   Write-Host (whoami)
                   $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
@@ -465,18 +466,14 @@ variable "base_user_data" {
                   Start-Sleep -Seconds 120
                   If (get-service xagt){Write-Host "FireEye agent installed"}
 
-                  ## Install DataDog
-                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
-                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
-                  msiexec /i "C:\temp\datadog-agent-7-latest.amd64.msi" /quiet /qn /norestart /log c:\temp\install.log APIKEY=$APIkey
-                  Start-Sleep -Seconds 120
-                  If (get-service datadogagent){Write-Host "Datadog agent installed"}
-
                   ## Change local admin name and set standard password
                   $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
                   $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
                   Rename-LocalUser administrator -NewName $localadminuser
                   Set-LocalUser -Name $localadminuser -Password (ConvertTo-SecureString -String $localadminpw -AsPlainText -Force)
+
+                  ## Set time zone to Pacific
+                  Set-Timezone 'Pacific Standard Time'
 
                   ## change hostname if necessary
                   If ((hostname) -ne $instance_name){rename-computer -newName $instance_name -restart}
@@ -487,6 +484,7 @@ variable "base_user_data" {
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+
                   ## Get token on every boot
                   Write-Host (whoami)
                   $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
@@ -521,18 +519,14 @@ variable "base_user_data" {
                   Start-Sleep -Seconds 120
                   If (get-service xagt){Write-Host "FireEye agent installed"}
 
-                  ## Install DataDog
-                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
-                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
-                  msiexec /i "C:\temp\datadog-agent-7-latest.amd64.msi" /quiet /qn /norestart /log c:\temp\install.log APIKEY=$APIkey
-                  Start-Sleep -Seconds 120
-                  If (get-service datadogagent){Write-Host "Datadog agent installed"}
-
                   ## Change local admin name and set standard password
                   $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
                   $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
                   Rename-LocalUser administrator -NewName $localadminuser
                   Set-LocalUser -Name $localadminuser -Password (ConvertTo-SecureString -String $localadminpw -AsPlainText -Force)
+
+                  ## Set time zone to Pacific
+                  Set-Timezone 'Pacific Standard Time'
 
                   ## change hostname if necessary
                   If ((hostname) -ne $instance_name){rename-computer -newName $instance_name -restart}
@@ -543,6 +537,7 @@ variable "base_user_data" {
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+
                   ## Get token on every boot
                   Write-Host (whoami)
                   $token = Invoke-RestMethod -Method Put -Uri http://169.254.169.254/latest/api/token -Headers @{"X-aws-ec2-metadata-token-ttl-seconds" = "600"}
@@ -577,18 +572,14 @@ variable "base_user_data" {
                   Start-Sleep -Seconds 120
                   If (get-service xagt){Write-Host "FireEye agent installed"}
 
-                  ## Install DataDog
-                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
-                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
-                  msiexec /i "C:\temp\datadog-agent-7-latest.amd64.msi" /quiet /qn /norestart /log c:\temp\install.log APIKEY=$APIkey
-                  Start-Sleep -Seconds 120
-                  If (get-service datadogagent){Write-Host "Datadog agent installed"}
-
                   ## Change local admin name and set standard password
                   $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
                   $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
                   Rename-LocalUser administrator -NewName $localadminuser
                   Set-LocalUser -Name $localadminuser -Password (ConvertTo-SecureString -String $localadminpw -AsPlainText -Force)
+
+                  ## Set time zone to Pacific
+                  Set-Timezone 'Pacific Standard Time'
 
                   ## change hostname if necessary
                   If ((hostname) -ne $instance_name){rename-computer -newName $instance_name -restart}
