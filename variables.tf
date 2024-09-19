@@ -466,6 +466,13 @@ variable "base_user_data" {
                   Start-Sleep -Seconds 120
                   If (get-service xagt){Write-Host "FireEye agent installed"}
 
+                  ## Install DataDog
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
+                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
+                  cd c:\temp
+                  Start-Process -Wait msiexec -ArgumentList '/qn /i datadog-agent-7-latest.amd64.msi /log c:\temp\DDinstall.log APIKEY=$apikey'
+                  If (get-service datadogagent){Write-Host "Datadog agent installed"}
+
                   ## Change local admin name and set standard password
                   $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
                   $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
@@ -519,6 +526,13 @@ variable "base_user_data" {
                   Start-Sleep -Seconds 120
                   If (get-service xagt){Write-Host "FireEye agent installed"}
 
+                  ## Install DataDog
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
+                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
+                  cd c:\temp
+                  Start-Process -Wait msiexec -ArgumentList '/qn /i datadog-agent-7-latest.amd64.msi /log c:\temp\DDinstall.log APIKEY=$apikey'
+                  If (get-service datadogagent){Write-Host "Datadog agent installed"}
+
                   ## Change local admin name and set standard password
                   $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
                   $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
@@ -571,6 +585,13 @@ variable "base_user_data" {
                   msiexec /i "C:\temp\xagtSetup_35.31.22_universal.msi" /quiet /qn /norestart /log c:\temp\FEinstall.log
                   Start-Sleep -Seconds 120
                   If (get-service xagt){Write-Host "FireEye agent installed"}
+
+                  ## Install DataDog
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
+                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
+                  cd c:\temp
+                  Start-Process -Wait msiexec -ArgumentList '/qn /i datadog-agent-7-latest.amd64.msi /log c:\temp\DDinstall.log APIKEY=$apikey'
+                  If (get-service datadogagent){Write-Host "Datadog agent installed"}
 
                   ## Change local admin name and set standard password
                   $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
