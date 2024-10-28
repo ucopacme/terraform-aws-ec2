@@ -225,7 +225,13 @@ variable "disable_api_termination" {
 variable "user_data" {
   type        = string
   default     = ""
-  description = "(Optional) A string of the desired User Data for the ec2."
+  description = "(Optional) A string of the desired User Data for the ec2, by default assumed to be a shell script."
+}
+
+variable "raw_user_data" {
+  type        = string
+  description = "(Optional) A string of the desired User Data for the ec2. The value for this variable overrides user_data and is not assumed to be a shell script (useful for appliance AMIs like Infoblox)."
+  default     = ""
 }
 
 variable "vcpu_count" {

@@ -41,11 +41,14 @@ locals {
     lookup(lookup(var.ec2_instance_map, local.vcpu_count, {}), local.memory_gb, "")
   )
 
-  # If non-Windows, use cloudinit_config user_data (see above).
+  # If var.raw_user_data was provided, use that for user_data.
+  # Else if non-Windows, use cloudinit_config user_data (see above).
   # Otherwise (for Windows), use var.user_data if defined, else var.base_user_data.
   # (Ideal to-do: find a way to do merged var.user_data and base_user_data on Windows).
-  user_data = length(regexall("^windows", var.os)) == 0 ? data.cloudinit_config.this.rendered : (
-    (contains(keys(var.base_user_data), var.os) && var.user_data == "") ? var.base_user_data[var.os] : var.user_data
+  user_data = var.raw_user_data != "" ? var.raw_user_data : (
+    length(regexall("^windows", var.os)) == 0 ? data.cloudinit_config.this.rendered : (
+      (contains(keys(var.base_user_data), var.os) && var.user_data == "") ? var.base_user_data[var.os] : var.user_data
+    )
   )
 }
 
