@@ -474,14 +474,21 @@ variable "base_user_data" {
 
                   ## Install DataDog
                   Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
-                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
-                  cd c:\temp
+                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty DataDog
+                  Set-Location c:\temp
                   Start-Process -Wait msiexec -ArgumentList '/qn /i datadog-agent-7-latest.amd64.msi /log c:\temp\DDinstall.log APIKEY=$apikey'
+                  Start-Sleep -Seconds 60
+                  (Get-Content C:\ProgramData\Datadog\datadog.yaml).Replace('$apikey', $APIkey) | Set-Content C:\ProgramData\Datadog\datadog.yaml
                   If (get-service datadogagent){Write-Host "Datadog agent installed"}
 
+                  ## Install Duo MFA for RDP
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key DuoWindowsLogon64.mst -file c:\temp\DuoWindowsLogon64.mst
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key DuoWindowsLogon64.msi -file c:\temp\DuoWindowsLogon64.msi
+                  msiexec /i 'c:\temp\DuoWindowsLogon64.msi' /quiet /qn /norestart TRANSFORMS='DuoWindowsLogon64.mst' /log c:\temp\duoinstall.log
+
                   ## Change local admin name and set standard password
-                  $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
-                  $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
+                  $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty localadminuser
+                  $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty localadminpassword
                   Rename-LocalUser administrator -NewName $localadminuser
                   Set-LocalUser -Name $localadminuser -Password (ConvertTo-SecureString -String $localadminpw -AsPlainText -Force)
 
@@ -534,14 +541,21 @@ variable "base_user_data" {
 
                   ## Install DataDog
                   Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
-                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
-                  cd c:\temp
+                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty DataDog
+                  Set-Location c:\temp
                   Start-Process -Wait msiexec -ArgumentList '/qn /i datadog-agent-7-latest.amd64.msi /log c:\temp\DDinstall.log APIKEY=$apikey'
+                  Start-Sleep -Seconds 60
+                  (Get-Content C:\ProgramData\Datadog\datadog.yaml).Replace('$apikey', $APIkey) | Set-Content C:\ProgramData\Datadog\datadog.yaml
                   If (get-service datadogagent){Write-Host "Datadog agent installed"}
 
+                  ## Install Duo MFA for RDP
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key DuoWindowsLogon64.mst -file c:\temp\DuoWindowsLogon64.mst
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key DuoWindowsLogon64.msi -file c:\temp\DuoWindowsLogon64.msi
+                  msiexec /i 'c:\temp\DuoWindowsLogon64.msi' /quiet /qn /norestart TRANSFORMS='DuoWindowsLogon64.mst' /log c:\temp\duoinstall.log
+
                   ## Change local admin name and set standard password
-                  $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
-                  $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
+                  $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty localadminuser
+                  $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty localadminpassword
                   Rename-LocalUser administrator -NewName $localadminuser
                   Set-LocalUser -Name $localadminuser -Password (ConvertTo-SecureString -String $localadminpw -AsPlainText -Force)
 
@@ -594,14 +608,21 @@ variable "base_user_data" {
 
                   ## Install DataDog
                   Read-S3Object -bucketname ec2-bootstrap-905418358248 -key datadog-agent-7-latest.amd64.msi -file c:\temp\datadog-agent-7-latest.amd64.msi
-                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty DataDog
-                  cd c:\temp
+                  $APIkey = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty DataDog
+                  Set-Location c:\temp
                   Start-Process -Wait msiexec -ArgumentList '/qn /i datadog-agent-7-latest.amd64.msi /log c:\temp\DDinstall.log APIKEY=$apikey'
+                  Start-Sleep -Seconds 60
+                  (Get-Content C:\ProgramData\Datadog\datadog.yaml).Replace('$apikey', $APIkey) | Set-Content C:\ProgramData\Datadog\datadog.yaml
                   If (get-service datadogagent){Write-Host "Datadog agent installed"}
 
+                  ## Install Duo MFA for RDP
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key DuoWindowsLogon64.mst -file c:\temp\DuoWindowsLogon64.mst
+                  Read-S3Object -bucketname ec2-bootstrap-905418358248 -key DuoWindowsLogon64.msi -file c:\temp\DuoWindowsLogon64.msi
+                  msiexec /i 'c:\temp\DuoWindowsLogon64.msi' /quiet /qn /norestart TRANSFORMS='DuoWindowsLogon64.mst' /log c:\temp\duoinstall.log
+
                   ## Change local admin name and set standard password
-                  $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminuser
-                  $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select -ExpandProperty localadminpassword
+                  $localadminuser = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty localadminuser
+                  $localadminpw = Get-SECSecretValue -secretid arn:aws:secretsmanager:us-west-2:905418358248:secret:ec2_bootstrap-CNv8ZM -Select SecretString | ConvertFrom-Json | Select-Object -ExpandProperty localadminpassword
                   Rename-LocalUser administrator -NewName $localadminuser
                   Set-LocalUser -Name $localadminuser -Password (ConvertTo-SecureString -String $localadminpw -AsPlainText -Force)
 
