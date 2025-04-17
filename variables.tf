@@ -338,6 +338,7 @@ variable "ec2_instance_map" {
       16 = "r7i.large"
     }
     4 = {
+      4  = "c7i-flex.large"
       8  = "c7i-flex.xlarge"
       16 = "t3a.xlarge"
       32 = "r7i.xlarge"
