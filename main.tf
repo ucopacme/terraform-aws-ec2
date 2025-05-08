@@ -94,7 +94,7 @@ resource "aws_instance" "this" {
   }
   lifecycle {
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
-    ignore_changes = [tags["ResourceGroup"],tags["ucop:AWSPatchPolicy"],tags["ucop:prePatchEbsSnapshot"],ami,associate_public_ip_address,user_data]
+    ignore_changes = [tags["ResourceGroup"],tags["ucop:AWSPatchPolicy"],root_block_device[0].tags["ucop:prePatchEbsSnapshot"],ami,associate_public_ip_address,user_data]
   }
   metadata_options {
     http_endpoint               = "enabled"
