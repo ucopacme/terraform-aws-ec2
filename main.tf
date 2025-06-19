@@ -1,6 +1,8 @@
 # user_data including a base value for given var.os, and also var.user_data.
 # (Note Cloud-init is applicable only for Linux).
 data "cloudinit_config" "this" {
+  gzip          = false
+  base64_encode = false
   dynamic "part" {
     for_each = [
       contains(keys(var.base_user_data), var.os) ? var.base_user_data[var.os] : "",
