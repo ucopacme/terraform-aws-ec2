@@ -23,20 +23,15 @@ The module will create:
 |Operating system|
 |--------------------|
 | al2023             |
-| amazon2            |
-| centos7            |
-| centos8            |
-| rhel6              |
-| rhel7              |
 | rhel8              |
 | rhel9              |
 | ubuntu1804         |
 | ubuntu1810         |
 | ubuntu1904         |
+| windows2022        |
 | windows2019        |
 | windows2019SQL2016E|
 | windows2016        |
-| windows2012r2      |
 | customlinux        |
 | customwin          |
 
