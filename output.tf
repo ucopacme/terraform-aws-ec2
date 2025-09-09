@@ -52,3 +52,8 @@ output "ebs_vol6" {
   description = "volume id"
   value       = join("", aws_ebs_volume.vol6.*.id)
 }
+
+output "ebs_vol7" {
+  description = "volume id"
+  value       = join("", aws_ebs_volume.vol7.*.id)
+}
