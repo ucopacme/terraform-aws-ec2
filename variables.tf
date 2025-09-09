@@ -76,6 +76,12 @@ variable "enabled_ebs_volume6" {
   default     = false
 }
 
+variable "enabled_ebs_volume7" {
+  type        = bool
+  description = "Set to `false` to prevent the module from creating secondary EBS volume"
+  default     = false
+}
+
 variable "instance_type" {
   default     = null
   description = "instance_type"
@@ -136,6 +142,12 @@ variable "snapshot_id_volume6" {
   default     = null
 }
 
+variable "snapshot_id_volume7" {
+  type        = string
+  description = "snapshot ID of the volume"
+  default     = null
+}
+
 variable "ebs_volume1_size" {
   type        = number
   description = "size of ebs volume"
@@ -164,6 +176,12 @@ variable "ebs_volume5_size" {
 }
 
 variable "ebs_volume6_size" {
+  type        = number
+  description = "size of ebs volume"
+  default     = null
+}
+
+variable "ebs_volume7_size" {
   type        = number
   description = "size of ebs volume"
   default     = null
