@@ -290,7 +290,7 @@ resource "aws_ebs_volume" "vol8" {
 
 resource "aws_volume_attachment" "attachment8" {
   count       = var.enabled_ebs_volume8 ? 1 : 0
-  device_name = "/dev/sdm"
+  device_name = "/dev/sdn"
   volume_id   = aws_ebs_volume.vol8.*.id[0]
   instance_id = aws_instance.this.*.id[0]
   lifecycle {
