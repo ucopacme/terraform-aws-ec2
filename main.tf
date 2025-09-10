@@ -275,3 +275,47 @@ resource "aws_volume_attachment" "attachment7" {
     ignore_changes = [instance_id,volume_id]
   }
 }
+
+resource "aws_ebs_volume" "vol8" {
+  count             = var.enabled_ebs_volume8 ? 1 : 0
+  size              = var.ebs_volume8_size
+  type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume8
+  availability_zone = aws_instance.this.*.availability_zone[0]
+  tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
+}
+
+resource "aws_volume_attachment" "attachment8" {
+  count       = var.enabled_ebs_volume8 ? 1 : 0
+  device_name = "/dev/sdm"
+  volume_id   = aws_ebs_volume.vol8.*.id[0]
+  instance_id = aws_instance.this.*.id[0]
+  lifecycle {
+    ignore_changes = [instance_id,volume_id]
+  }
+}
+
+resource "aws_ebs_volume" "vol9" {
+  count             = var.enabled_ebs_volume9 ? 1 : 0
+  size              = var.ebs_volume9_size
+  type              = var.volume_type
+  snapshot_id       = var.snapshot_id_volume9
+  availability_zone = aws_instance.this.*.availability_zone[0]
+  tags                        = var.tags
+  lifecycle {
+    ignore_changes = [availability_zone]
+  }
+}
+
+resource "aws_volume_attachment" "attachment9" {
+  count       = var.enabled_ebs_volume9 ? 1 : 0
+  device_name = "/dev/sdo"
+  volume_id   = aws_ebs_volume.vol9.*.id[0]
+  instance_id = aws_instance.this.*.id[0]
+  lifecycle {
+    ignore_changes = [instance_id,volume_id]
+  }
+}
