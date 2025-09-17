@@ -40,10 +40,34 @@ variable "root_volume_encryption" {
   default     = true
 }
 
+variable "root_volume_iops" {
+  type        = number
+  description = "Root volume IOPs"
+  default     = 3000
+}
+
+variable "root_volume_throughput" {
+  type        = number
+  description = "Root volume throughput"
+  default     = 125
+}
+
 variable "enabled_ebs_volume1" {
   type        = bool
   description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
+}
+
+variable "ebs_volume1_iops" {
+  type        = number
+  description = "EBS volume 1 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume1_throughput" {
+  type        = number
+  description = "EBS volume 1 throughput"
+  default     = 125
 }
 
 variable "enabled_ebs_volume2" {
@@ -52,10 +76,34 @@ variable "enabled_ebs_volume2" {
   default     = false
 }
 
+variable "ebs_volume2_iops" {
+  type        = number
+  description = "EBS volume 2 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume2_throughput" {
+  type        = number
+  description = "EBS volume 2 throughput"
+  default     = 125
+}
+
 variable "enabled_ebs_volume3" {
   type        = bool
   description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
+}
+
+variable "ebs_volume3_iops" {
+  type        = number
+  description = "EBS volume 3 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume3_throughput" {
+  type        = number
+  description = "EBS volume 3 throughput"
+  default     = 125
 }
 
 variable "enabled_ebs_volume4" {
@@ -64,10 +112,34 @@ variable "enabled_ebs_volume4" {
   default     = false
 }
 
+variable "ebs_volume4_iops" {
+  type        = number
+  description = "EBS volume 4 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume4_throughput" {
+  type        = number
+  description = "EBS volume 4 throughput"
+  default     = 125
+}
+
 variable "enabled_ebs_volume5" {
   type        = bool
   description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
+}
+
+variable "ebs_volume5_iops" {
+  type        = number
+  description = "EBS volume 5 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume5_throughput" {
+  type        = number
+  description = "EBS volume 5 throughput"
+  default     = 125
 }
 
 variable "enabled_ebs_volume6" {
@@ -76,10 +148,34 @@ variable "enabled_ebs_volume6" {
   default     = false
 }
 
+variable "ebs_volume6_iops" {
+  type        = number
+  description = "EBS volume 6 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume6_throughput" {
+  type        = number
+  description = "EBS volume 6 throughput"
+  default     = 125
+}
+
 variable "enabled_ebs_volume7" {
   type        = bool
   description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
+}
+
+variable "ebs_volume7_iops" {
+  type        = number
+  description = "EBS volume 7 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume7_throughput" {
+  type        = number
+  description = "EBS volume 7 throughput"
+  default     = 125
 }
 
 variable "enabled_ebs_volume8" {
@@ -88,10 +184,34 @@ variable "enabled_ebs_volume8" {
   default     = false
 }
 
+variable "ebs_volume8_iops" {
+  type        = number
+  description = "EBS volume 8 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume8_throughput" {
+  type        = number
+  description = "EBS volume 8 throughput"
+  default     = 125
+}
+
 variable "enabled_ebs_volume9" {
   type        = bool
   description = "Set to `false` to prevent the module from creating secondary EBS volume"
   default     = false
+}
+
+variable "ebs_volume9_iops" {
+  type        = number
+  description = "EBS volume 9 IOPs"
+  default     = 3000
+}
+
+variable "ebs_volume9_throughput" {
+  type        = number
+  description = "EBS volume 9 throughput"
+  default     = 125
 }
 
 variable "instance_type" {

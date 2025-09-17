@@ -87,11 +87,12 @@ resource "aws_instance" "this" {
     threads_per_core = var.threads_per_core
   }
 
-
   root_block_device {
     volume_size = var.root_volume_size
     volume_type = var.volume_type
     encrypted   = var.root_volume_encryption
+    iops        = contains(["gp3", "io1", "io2"], var.volume_type) ? var.root_volume_iops : null
+    throughput  = contains(["gp3"], var.volume_type) ? var.root_volume_throughput : null
     tags        = var.tags
   }
   lifecycle {
@@ -126,6 +127,8 @@ resource "aws_ebs_volume" "this" {
   count             = var.enabled_ebs_volume1 ? 1 : 0
   size              = var.ebs_volume1_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume1_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume1_throughput : null
   snapshot_id       = var.snapshot_id_volume1
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -148,6 +151,8 @@ resource "aws_ebs_volume" "vol2" {
   count             = var.enabled_ebs_volume2 ? 1 : 0
   size              = var.ebs_volume2_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume2_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume2_throughput : null
   snapshot_id       = var.snapshot_id_volume2
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -170,6 +175,8 @@ resource "aws_ebs_volume" "vol3" {
   count             = var.enabled_ebs_volume3 ? 1 : 0
   size              = var.ebs_volume3_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume3_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume3_throughput : null
   snapshot_id       = var.snapshot_id_volume3
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -192,6 +199,8 @@ resource "aws_ebs_volume" "vol4" {
   count             = var.enabled_ebs_volume4 ? 1 : 0
   size              = var.ebs_volume4_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume4_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume4_throughput : null
   snapshot_id       = var.snapshot_id_volume4
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -214,6 +223,8 @@ resource "aws_ebs_volume" "vol5" {
   count             = var.enabled_ebs_volume5 ? 1 : 0
   size              = var.ebs_volume5_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume5_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume5_throughput : null
   snapshot_id       = var.snapshot_id_volume5
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -236,6 +247,8 @@ resource "aws_ebs_volume" "vol6" {
   count             = var.enabled_ebs_volume6 ? 1 : 0
   size              = var.ebs_volume6_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume6_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume6_throughput : null
   snapshot_id       = var.snapshot_id_volume6
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -258,6 +271,8 @@ resource "aws_ebs_volume" "vol7" {
   count             = var.enabled_ebs_volume7 ? 1 : 0
   size              = var.ebs_volume7_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume7_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume7_throughput : null
   snapshot_id       = var.snapshot_id_volume7
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -280,6 +295,8 @@ resource "aws_ebs_volume" "vol8" {
   count             = var.enabled_ebs_volume8 ? 1 : 0
   size              = var.ebs_volume8_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume8_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume8_throughput : null
   snapshot_id       = var.snapshot_id_volume8
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
@@ -302,6 +319,8 @@ resource "aws_ebs_volume" "vol9" {
   count             = var.enabled_ebs_volume9 ? 1 : 0
   size              = var.ebs_volume9_size
   type              = var.volume_type
+  iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume9_iops : null
+  throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume9_throughput : null
   snapshot_id       = var.snapshot_id_volume9
   availability_zone = aws_instance.this.*.availability_zone[0]
   tags                        = var.tags
