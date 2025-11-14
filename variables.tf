@@ -459,7 +459,7 @@ variable "amis_os_map_regex" {
     rhel6               = "^RHEL-6.*x86_64.*"
     rhel7               = "^RHEL-7.*x86_64.*"
     rhel8               = "^RHEL-8.10.*x86_64.*"
-    rhel9               = "^RHEL-9.6.*x86_64.*"
+    rhel9               = "^RHEL-9.7.*x86_64.*"
     amazon2             = "^amzn2-ami-hvm-.*x86_64-gp2"
     al2023              = "^al2023-ami-2023.*x86_64"
     windows2022         = "^Windows_Server-2022-English-Full-Base-.*"
