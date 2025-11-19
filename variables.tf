@@ -456,6 +456,8 @@ variable "amis_os_map_regex" {
     ubuntu1904          = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
     centos7             = "CentOS.Linux.7.*x86_64.*"
     centos8             = "CentOS.Linux.8.*x86_64.*"
+    ol8                 = "^OL8.9-x86_64.*"
+    ol9                 = "^OL9.3-x86_64.*"
     rhel6               = "^RHEL-6.*x86_64.*"
     rhel7               = "^RHEL-7.*x86_64.*"
     rhel8               = "^RHEL-8.10.*x86_64.*"
@@ -480,6 +482,8 @@ variable "amis_os_map_owners" {
     ubuntu1804          = "099720109477" #CANONICAL
     ubuntu1810          = "099720109477" #CANONICAL
     ubuntu1904          = "099720109477" #CANONICAL
+    ol8                 = "131827586825" #Oracle
+    ol9                 = "131827586825" #Oracle
     rhel6               = "309956199498" #Amazon Web Services
     rhel7               = "309956199498" #Amazon Web Services
     rhel8               = "309956199498" #Amazon Web Services
@@ -591,6 +595,40 @@ variable "base_user_data" {
             fi
           EOF
     rhel9 = <<-EOF
+            #!/bin/bash
+            cd /tmp
+            sudo dnf install -y python3
+            sudo dnf install -y \
+              https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm \
+              https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect.rpm \
+              https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect-selinux.noarch.rpm \
+              https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/redhat/amd64/latest/amazon-cloudwatch-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+            sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentLinuxBaseConfig
+            if [ $? -eq 0 ]; then
+              sudo systemctl enable amazon-cloudwatch-agent
+              sudo systemctl start amazon-cloudwatch-agent
+            fi
+          EOF
+    ol8 = <<-EOF
+            #!/bin/bash
+            cd /tmp
+            sudo dnf install -y python3
+            sudo dnf install -y \
+              https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm \
+              https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect.rhel8.rpm \
+              https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect-selinux.noarch.rpm \
+              https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/redhat/amd64/latest/amazon-cloudwatch-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+            sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentLinuxBaseConfig
+            if [ $? -eq 0 ]; then
+              sudo systemctl enable amazon-cloudwatch-agent
+              sudo systemctl start amazon-cloudwatch-agent
+            fi
+          EOF
+    ol9 = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3

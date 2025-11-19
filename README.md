@@ -25,6 +25,8 @@ The module will create:
 | al2023             |
 | rhel8              |
 | rhel9              |
+| ol8                |
+| ol9                |
 | ubuntu1804         |
 | ubuntu1810         |
 | ubuntu1904         |
