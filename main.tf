@@ -1,3 +1,15 @@
+locals {
+  eni_mode = var.secondary_private_ips > 0
+}
+
+resource "aws_network_interface" "this" {
+  count             = local.eni_mode ? 1 : 0
+  subnet_id         = var.subnet_id
+  security_groups   = var.vpc_security_group_ids
+  private_ips_count = var.secondary_private_ips
+  tags              = var.tags
+}
+
 # user_data including a base value for given var.os, and also var.user_data.
 # (Note Cloud-init is applicable only for Linux).
 data "cloudinit_config" "this" {
@@ -82,6 +94,13 @@ resource "aws_instance" "this" {
   vpc_security_group_ids      = concat(var.vpc_security_group_ids, data.aws_security_groups.fms_security_groups_common_usw2.ids)
   key_name                    = var.key_name
   user_data                   = local.user_data
+  # Use new primary_network_interface for ENI
+  dynamic "primary_network_interface" {
+    for_each = local.eni_mode ? [1] : []
+    content {
+      network_interface_id = aws_network_interface.this[0].id
+    }
+  }
   cpu_options {
     core_count       = var.core_count
     threads_per_core = var.threads_per_core
