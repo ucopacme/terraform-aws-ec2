@@ -10,6 +10,12 @@ variable "associate_public_ip_address" {
   type        = bool
 }
 
+variable "secondary_private_ips" {
+  type        = number
+  default     = 0
+  description = "Number of secondary private IPs to assign to a secondary ENI"
+}
+
 variable "core_count" {
   type        = number
   description = "custom vcpu count"
