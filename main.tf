@@ -83,15 +83,15 @@ data "aws_ami" "search" {
 resource "aws_instance" "this" {
   count                       = local.enabled ? 1 : 0
   ami                         = var.ami != "" ? var.ami : data.aws_ami.search.id
-  associate_public_ip_address = var.associate_public_ip_address
+  associate_public_ip_address = local.eni_mode ? null : var.associate_public_ip_address
   disable_api_termination     = var.disable_api_termination
   ebs_optimized               = var.ebs_optimized
   iam_instance_profile        = var.instance_profile
   instance_type               = local.instance_type
   monitoring                  = var.monitoring
-  subnet_id                   = var.subnet_id
+  subnet_id                   = local.eni_mode ? null : var.subnet_id
   tags                        = var.tags
-  vpc_security_group_ids      = concat(var.vpc_security_group_ids, data.aws_security_groups.fms_security_groups_common_usw2.ids)
+  vpc_security_group_ids      = local.eni_mode ? null : concat(var.vpc_security_group_ids, data.aws_security_groups.fms_security_groups_common_usw2.ids)
   key_name                    = var.key_name
   user_data                   = local.user_data
   # Use new primary_network_interface for ENI
