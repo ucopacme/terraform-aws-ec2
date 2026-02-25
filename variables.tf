@@ -470,6 +470,7 @@ variable "amis_os_map_regex" {
     rhel9               = "^RHEL-9.7.*x86_64.*"
     amazon2             = "^amzn2-ami-hvm-.*x86_64-gp2"
     al2023              = "^al2023-ami-2023.*x86_64"
+    windows2025         = "^Windows_Server-2025-English-Full-Base-.*"
     windows2022         = "^Windows_Server-2022-English-Full-Base-.*"
     windows2019         = "^Windows_Server-2019-English-Full-Base-.*"
     windows2019SQL2016E = "^Windows_Server-2019-English-Full-SQL_2016_SP3_Enterprise-.*"
@@ -500,6 +501,7 @@ variable "amis_os_map_owners" {
     al2023              = "137112412989" #amazon
     windows2019         = "801119661308" #amazon
     windows2019SQL2016E = "801119661308" #amazon
+    windows2025         = "801119661308" #amazon
     windows2022         = "801119661308" #amazon
     windows2016         = "801119661308" #amazon
     windows2012r2       = "801119661308" #amazon
@@ -664,6 +666,12 @@ variable "base_user_data" {
                   </powershell>
                 EOF
     windows2022 = <<-EOF
+                  <powershell>
+                  Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
+                  & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
+                  </powershell>
+                EOF
+    windows2025 = <<-EOF
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
                   & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
