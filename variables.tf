@@ -473,7 +473,6 @@ variable "amis_os_map_regex" {
     windows2025         = "^Windows_Server-2025-English-Full-Base-.*"
     windows2022         = "^Windows_Server-2022-English-Full-Base-.*"
     windows2019         = "^Windows_Server-2019-English-Full-Base-.*"
-    windows2019SQL2016E = "^Windows_Server-2019-English-Full-SQL_2016_SP3_Enterprise-.*"
     windows2016         = "^Windows_Server-2016-English-Full-Base-.*"
     windows2012r2       = "^Windows_Server-2012-R2_RTM-English-64Bit-Base-.*"
     customlinux         = "custom-linux-ami*"
@@ -500,7 +499,6 @@ variable "amis_os_map_owners" {
     amazon2             = "137112412989" #amazon
     al2023              = "137112412989" #amazon
     windows2019         = "801119661308" #amazon
-    windows2019SQL2016E = "801119661308" #amazon
     windows2025         = "801119661308" #amazon
     windows2022         = "801119661308" #amazon
     windows2016         = "801119661308" #amazon
