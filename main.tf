@@ -67,7 +67,8 @@ locals {
 }
 
 data "aws_ami" "search" {
-  most_recent = true
+  most_recent        = true
+  include_deprecated = contains(["ol8", "ol9"], var.os) ? true : false
 
   filter {
     name   = "virtualization-type"
