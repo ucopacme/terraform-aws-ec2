@@ -220,60 +220,6 @@ variable "ebs_volume9_throughput" {
   default     = 125
 }
 
-variable "enabled_ebs_volume10" {
-  type        = bool
-  description = "Set to `false` to prevent the module from creating secondary EBS volume"
-  default     = false
-}
-
-variable "ebs_volume10_iops" {
-  type        = number
-  description = "EBS volume 10 IOPs"
-  default     = 3000
-}
-
-variable "ebs_volume10_throughput" {
-  type        = number
-  description = "EBS volume 10 throughput"
-  default     = 3000
-}
-
-variable "enabled_ebs_volume11" {
-  type        = bool
-  description = "Set to `false` to prevent the module from creating secondary EBS volume"
-  default     = false
-}
-
-variable "ebs_volume11_iops" {
-  type        = number
-  description = "EBS volume 11 IOPs"
-  default     = 3000
-}
-
-variable "ebs_volume11_throughput" {
-  type        = number
-  description = "EBS volume 11 throughput"
-  default     = 125
-}
-
-variable "enabled_ebs_volume12" {
-  type        = bool
-  description = "Set to `false` to prevent the module from creating secondary EBS volume"
-  default     = false
-}
-
-variable "ebs_volume12_iops" {
-  type        = number
-  description = "EBS volume 12 IOPs"
-  default     = 3000
-}
-
-variable "ebs_volume12_throughput" {
-  type        = number
-  description = "EBS volume 12 throughput"
-  default     = 125
-}
-
 variable "instance_type" {
   default     = null
   description = "instance_type"
@@ -352,24 +298,6 @@ variable "snapshot_id_volume9" {
   default     = null
 }
 
-variable "snapshot_id_volume10" {
-  type        = string
-  description = "snapshot ID of the volume"
-  default     = null
-}
-
-variable "snapshot_id_volume11" {
-  type        = string
-  description = "snapshot ID of the volume"
-  default     = null
-}
-
-variable "snapshot_id_volume12" {
-  type        = string
-  description = "snapshot ID of the volume"
-  default     = null
-}
-
 variable "ebs_volume1_size" {
   type        = number
   description = "size of ebs volume"
@@ -416,24 +344,6 @@ variable "ebs_volume8_size" {
 }
 
 variable "ebs_volume9_size" {
-  type        = number
-  description = "size of ebs volume"
-  default     = null
-}
-
-variable "ebs_volume10_size" {
-  type        = number
-  description = "size of ebs volume"
-  default     = null
-}
-
-variable "ebs_volume11_size" {
-  type        = number
-  description = "size of ebs volume"
-  default     = null
-}
-
-variable "ebs_volume12_size" {
   type        = number
   description = "size of ebs volume"
   default     = null
