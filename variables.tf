@@ -468,6 +468,7 @@ variable "amis_os_map_regex" {
     rhel7               = "^RHEL-7.*x86_64.*"
     rhel8               = "^RHEL-8.10.*x86_64.*"
     rhel9               = "^RHEL-9.7.*x86_64.*"
+    rhel10              = "^RHEL-10.1.*x86_64.*"
     amazon2             = "^amzn2-ami-hvm-.*x86_64-gp2"
     al2023              = "^al2023-ami-2023.*x86_64"
     windows2025         = "^Windows_Server-2025-English-Full-Base-.*"
@@ -493,6 +494,7 @@ variable "amis_os_map_owners" {
     rhel7               = "309956199498" #Amazon Web Services
     rhel8               = "309956199498" #Amazon Web Services
     rhel9               = "309956199498" #Amazon Web Services
+    rhel10              = "309956199498" #Amazon Web Services
     centos7             = "679593333241"
     centos8             = "679593333241"
     amazon2             = "137112412989" #amazon
@@ -599,6 +601,23 @@ variable "base_user_data" {
             fi
           EOF
     rhel9 = <<-EOF
+            #!/bin/bash
+            cd /tmp
+            sudo dnf install -y python3
+            sudo dnf install -y \
+              https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm \
+              https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect.rpm \
+              https://amazon-ec2-instance-connect-us-west-2.s3.us-west-2.amazonaws.com/latest/linux_amd64/ec2-instance-connect-selinux.noarch.rpm \
+              https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/redhat/amd64/latest/amazon-cloudwatch-agent.rpm
+            sudo systemctl enable amazon-ssm-agent
+            sudo systemctl start amazon-ssm-agent
+            sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentLinuxBaseConfig
+            if [ $? -eq 0 ]; then
+              sudo systemctl enable amazon-cloudwatch-agent
+              sudo systemctl start amazon-cloudwatch-agent
+            fi
+          EOF
+    rhel10 = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3

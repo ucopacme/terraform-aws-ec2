@@ -25,6 +25,7 @@ The module will create:
 | al2023             |
 | rhel8              |
 | rhel9              |
+| rhel10             |
 | ol8                |
 | ol9                |
 | ubuntu1804         |
@@ -65,7 +66,7 @@ provider "aws" {
 module "ec2" {
   source = "git::https://git@github.com/ucopacme/terraform-aws-ec2.git//?ref=v0.0.33"
   enabled                = true     # change it to false to destroy the ec2 instance
-  os                     = "al2023" # List of os(al2023,amazon2,rhel7,rhel8,rhel9,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2016)
+  os                     = "al2023" # List of os(al2023,amazon2,rhel7,rhel8,rhel9,rhel10,ubuntu1804,ubuntu1810,ubuntu1904,windows2019,windows2022,windows2025)
   vcpu_count             = 2        # Choices are 2,4,8,16,32
   memory_gb              = 4        # Choices are 1,2,4,8,16,32,64,128,256
   core_count             = ""       # default set to Null, Set customized CPU core count
