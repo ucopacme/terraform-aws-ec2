@@ -374,7 +374,8 @@ variable "key_name" {
 variable "vpc_security_group_ids" {
   type        = list(string)
   description = "Security group IDs to associate with the EC2"
-  default     = null
+  default     = []
+  nullable    = false
 }
 
 variable "instance_profile" {
