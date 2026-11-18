@@ -45,9 +45,9 @@ variable "enabled_eip" {
 }
 
 variable "enabled" {
-  type        = string
-  description = "Set to `false` to prevent the module from creating any resources"
-  default     = "true"
+  type        = bool
+  description = "Set to `false` to prevent the module from creating any resources. Setting it to `false` on an existing deployment destroys the instance, ENI, EIP and data volumes."
+  default     = true
 }
 
 variable "root_volume_encryption" {

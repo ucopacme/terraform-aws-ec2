@@ -64,7 +64,7 @@ data "aws_security_groups" "fms_security_groups_common_usw2" {
 }
 
 locals {
-  enabled = var.enabled == "true"
+  enabled = var.enabled == true
   vcpu_count = coalesce(var.vcpu_count,
     var.memory_gb != null ? min([for k, v in var.ec2_instance_map : k if contains(keys(v), tostring(var.memory_gb))]...) : 2
   )
