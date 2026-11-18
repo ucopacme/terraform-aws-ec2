@@ -454,8 +454,17 @@ variable "memory_gb" {
 # AMI search
 
 variable "os" {
-  description = "The OS reference to search for"
+  type        = string
+  description = "The OS reference to search for. Must be a key in amis_os_map_regex (checked at plan time when ami is not set)."
   default     = "al2023"
+  nullable    = false
+  # Map membership can't be checked here: before Terraform 1.9, validation
+  # can't reference other variables. The precondition on data.aws_ami.search
+  # covers it.
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.os))
+    error_message = "var.os must be a non-empty OS key with no spaces, such as al2023, rhel9 or windows2025."
+  }
 }
 
 variable "amis_primary_owners" {
