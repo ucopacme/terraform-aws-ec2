@@ -65,15 +65,26 @@ data "aws_security_groups" "fms_security_groups_common_usw2" {
 
 locals {
   enabled = var.enabled == true
-  vcpu_count = coalesce(var.vcpu_count,
-    var.memory_gb != null ? min([for k, v in var.ec2_instance_map : k if contains(keys(v), tostring(var.memory_gb))]...) : 2
+  # Null-safe so a bad vcpu_count/memory_gb pair reaches the precondition on
+  # aws_instance.this (clear error) instead of failing inside coalesce()/min().
+  vcpu_count = var.vcpu_count != null ? var.vcpu_count : (
+    var.memory_gb != null ? try(min([for k, v in var.ec2_instance_map : k if contains(keys(v), tostring(var.memory_gb))]...), null) : 2
   )
-  memory_gb = coalesce(var.memory_gb,
-    var.vcpu_count != null ? min(keys(lookup(var.ec2_instance_map, var.vcpu_count, {}))...) : 1
+  memory_gb = var.memory_gb != null ? var.memory_gb : (
+    var.vcpu_count != null ? try(min(keys(lookup(var.ec2_instance_map, var.vcpu_count, {}))...), null) : 1
   )
-  instance_type = coalesce(var.instance_type,
-    lookup(lookup(var.ec2_instance_map, local.vcpu_count, {}), local.memory_gb, "")
+  instance_type = var.instance_type != null && var.instance_type != "" ? var.instance_type : (
+    try(var.ec2_instance_map[tostring(local.vcpu_count)][tostring(local.memory_gb)], null)
   )
+
+  # Valid pairs for the error message, sorted numerically, e.g.
+  # "2 vCPU: 1/2/4/8/16 GB; 4 vCPU: 8/16/32 GB; ..."
+  valid_instance_sizes = join("; ", [
+    for c in sort([for k in keys(var.ec2_instance_map) : format("%05d", tonumber(k))]) :
+    "${tonumber(c)} vCPU: ${join("/", [
+      for m in sort([for k in keys(var.ec2_instance_map[tostring(tonumber(c))]) : format("%05d", tonumber(k))]) : tonumber(m)
+    ])} GB"
+  ])
 
   # If var.raw_user_data was provided, use that for user_data.
   # Else if non-Windows, use cloudinit_config user_data (see above).
@@ -149,6 +160,10 @@ resource "aws_instance" "this" {
     tags        = var.tags
   }
   lifecycle {
+    precondition {
+      condition     = local.instance_type != null
+      error_message = "No instance type for vcpu_count = ${coalesce(var.vcpu_count, "(not set)")}, memory_gb = ${coalesce(var.memory_gb, "(not set)")} in ec2_instance_map. Valid pairs: ${local.valid_instance_sizes}. Or set instance_type directly."
+    }
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
     ignore_changes = [tags["ResourceGroup"],tags["ucop:AWSPatchPolicy"],root_block_device[0].tags["ucop:prePatchEbsSnapshot"],ami,associate_public_ip_address,user_data]
   }
