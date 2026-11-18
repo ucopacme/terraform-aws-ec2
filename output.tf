@@ -23,6 +23,11 @@ output "instance_private_ip" {
   value       = join("", aws_instance.this.*.private_ip)
 }
 
+output "network_interface_id" {
+  description = "ID of the instance's primary network interface (existing, module-created, or AWS default ENI). Empty string when enabled is false."
+  value       = join("", aws_instance.this.*.primary_network_interface_id)
+}
+
 output "ebs_vol1" {
   description = "volume id"
   value       = join("",aws_ebs_volume.this.*.id)
