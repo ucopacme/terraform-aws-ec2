@@ -1,8 +1,8 @@
 locals {
   existing_eni = var.network_interface_id != null
   # count must not depend on network_interface_id: it may be unknown at plan time
-  # when the ENI is created in the same apply. The precondition on aws_instance
-  # rejects setting both variables.
+  # when the ENI is created in the same apply. The precondition on
+  # data.aws_subnet.subnet rejects setting both variables.
   create_eni = var.secondary_private_ips > 0
   eni_mode   = local.existing_eni || local.create_eni
   primary_eni_id = local.existing_eni ? var.network_interface_id : (
@@ -38,6 +38,16 @@ data "cloudinit_config" "this" {
 # Read in ID of common security group created by Firewall Manager.
 data "aws_subnet" "subnet" {
   id = var.subnet_id
+
+  # Cross-variable checks live here because this data source is always
+  # evaluated (no count), even when var.enabled is false. Variable validation
+  # can't reference other variables before Terraform 1.9.
+  lifecycle {
+    precondition {
+      condition     = !(var.network_interface_id != null && var.secondary_private_ips > 0)
+      error_message = "network_interface_id and secondary_private_ips cannot both be set. Assign secondary IPs on the existing network interface instead."
+    }
+  }
 }
 
 data "aws_security_groups" "fms_security_groups_common_usw2" {
@@ -124,10 +134,6 @@ resource "aws_instance" "this" {
     tags        = var.tags
   }
   lifecycle {
-    precondition {
-      condition     = !(local.existing_eni && var.secondary_private_ips > 0)
-      error_message = "network_interface_id and secondary_private_ips cannot both be set. Assign secondary IPs on the existing network interface instead."
-    }
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
     ignore_changes = [tags["ResourceGroup"],tags["ucop:AWSPatchPolicy"],root_block_device[0].tags["ucop:prePatchEbsSnapshot"],ami,associate_public_ip_address,user_data]
   }
