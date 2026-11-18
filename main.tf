@@ -159,8 +159,8 @@ resource "aws_eip" "this" {
 # resource block for ec2 and eip association #
 resource "aws_eip_association" "eip_assoc" {
   count    = local.enabled && var.enabled_eip ? 1 : 0
-  instance_id   = aws_instance.this.*.id[0]
-  allocation_id = aws_eip.this.*.id[0]
+  instance_id   = one(aws_instance.this[*].id)
+  allocation_id = one(aws_eip.this[*].id)
 
 }
 # resource block for ebs volumes #
@@ -171,7 +171,7 @@ resource "aws_ebs_volume" "this" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume1_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume1_throughput : null
   snapshot_id       = var.snapshot_id_volume1
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -181,8 +181,8 @@ resource "aws_ebs_volume" "this" {
 resource "aws_volume_attachment" "this" {
   count       = local.enabled && var.enabled_ebs_volume1 ? 1 : 0
   device_name = "/dev/sdh"
-  volume_id   = aws_ebs_volume.this.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.this[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -195,7 +195,7 @@ resource "aws_ebs_volume" "vol2" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume2_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume2_throughput : null
   snapshot_id       = var.snapshot_id_volume2
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -205,8 +205,8 @@ resource "aws_ebs_volume" "vol2" {
 resource "aws_volume_attachment" "attachment2" {
   count       = local.enabled && var.enabled_ebs_volume2 ? 1 : 0
   device_name = "/dev/sdf"
-  volume_id   = aws_ebs_volume.vol2.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol2[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -219,7 +219,7 @@ resource "aws_ebs_volume" "vol3" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume3_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume3_throughput : null
   snapshot_id       = var.snapshot_id_volume3
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -229,8 +229,8 @@ resource "aws_ebs_volume" "vol3" {
 resource "aws_volume_attachment" "attachment3" {
   count       = local.enabled && var.enabled_ebs_volume3 ? 1 : 0
   device_name = "/dev/sdj"
-  volume_id   = aws_ebs_volume.vol3.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol3[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -243,7 +243,7 @@ resource "aws_ebs_volume" "vol4" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume4_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume4_throughput : null
   snapshot_id       = var.snapshot_id_volume4
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -253,8 +253,8 @@ resource "aws_ebs_volume" "vol4" {
 resource "aws_volume_attachment" "attachment4" {
   count       = local.enabled && var.enabled_ebs_volume4 ? 1 : 0
   device_name = "/dev/sdi"
-  volume_id   = aws_ebs_volume.vol4.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol4[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -267,7 +267,7 @@ resource "aws_ebs_volume" "vol5" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume5_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume5_throughput : null
   snapshot_id       = var.snapshot_id_volume5
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -277,8 +277,8 @@ resource "aws_ebs_volume" "vol5" {
 resource "aws_volume_attachment" "attachment5" {
   count       = local.enabled && var.enabled_ebs_volume5 ? 1 : 0
   device_name = "/dev/sdk"
-  volume_id   = aws_ebs_volume.vol5.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol5[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -291,7 +291,7 @@ resource "aws_ebs_volume" "vol6" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume6_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume6_throughput : null
   snapshot_id       = var.snapshot_id_volume6
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -301,8 +301,8 @@ resource "aws_ebs_volume" "vol6" {
 resource "aws_volume_attachment" "attachment6" {
   count       = local.enabled && var.enabled_ebs_volume6 ? 1 : 0
   device_name = "/dev/sdl"
-  volume_id   = aws_ebs_volume.vol6.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol6[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -315,7 +315,7 @@ resource "aws_ebs_volume" "vol7" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume7_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume7_throughput : null
   snapshot_id       = var.snapshot_id_volume7
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -325,8 +325,8 @@ resource "aws_ebs_volume" "vol7" {
 resource "aws_volume_attachment" "attachment7" {
   count       = local.enabled && var.enabled_ebs_volume7 ? 1 : 0
   device_name = "/dev/sdm"
-  volume_id   = aws_ebs_volume.vol7.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol7[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -339,7 +339,7 @@ resource "aws_ebs_volume" "vol8" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume8_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume8_throughput : null
   snapshot_id       = var.snapshot_id_volume8
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -349,8 +349,8 @@ resource "aws_ebs_volume" "vol8" {
 resource "aws_volume_attachment" "attachment8" {
   count       = local.enabled && var.enabled_ebs_volume8 ? 1 : 0
   device_name = "/dev/sdn"
-  volume_id   = aws_ebs_volume.vol8.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol8[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
@@ -363,7 +363,7 @@ resource "aws_ebs_volume" "vol9" {
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume9_iops : null
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume9_throughput : null
   snapshot_id       = var.snapshot_id_volume9
-  availability_zone = aws_instance.this.*.availability_zone[0]
+  availability_zone = one(aws_instance.this[*].availability_zone)
   tags                        = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
@@ -373,8 +373,8 @@ resource "aws_ebs_volume" "vol9" {
 resource "aws_volume_attachment" "attachment9" {
   count       = local.enabled && var.enabled_ebs_volume9 ? 1 : 0
   device_name = "/dev/sdo"
-  volume_id   = aws_ebs_volume.vol9.*.id[0]
-  instance_id = aws_instance.this.*.id[0]
+  volume_id   = one(aws_ebs_volume.vol9[*].id)
+  instance_id = one(aws_instance.this[*].id)
   lifecycle {
     ignore_changes = [instance_id,volume_id]
   }
