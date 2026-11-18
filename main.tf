@@ -87,7 +87,9 @@ locals {
   )
 }
 
+# Only search when var.ami isn't set, so an explicit ami doesn't depend on var.os.
 data "aws_ami" "search" {
+  count              = var.ami == null || var.ami == "" ? 1 : 0
   most_recent        = true
   include_deprecated = contains(["ol8", "ol9"], var.os) ? true : false
 
@@ -96,15 +98,25 @@ data "aws_ami" "search" {
     values = ["hvm"]
   }
 
-  name_regex = lookup(var.amis_os_map_regex, var.os)
-  owners     = [length(var.amis_primary_owners) == 0 ? lookup(var.amis_os_map_owners, var.os) : var.amis_primary_owners]
+  # Defaults avoid a raw lookup() error; the precondition below reports it clearly.
+  name_regex = lookup(var.amis_os_map_regex, var.os, null)
+  owners     = [length(var.amis_primary_owners) == 0 ? lookup(var.amis_os_map_owners, var.os, "self") : var.amis_primary_owners]
+
+  lifecycle {
+    precondition {
+      condition = contains(keys(var.amis_os_map_regex), var.os) && (
+        length(var.amis_primary_owners) > 0 || contains(keys(var.amis_os_map_owners), var.os)
+      )
+      error_message = "var.os \"${var.os}\" has no entry in amis_os_map_regex/amis_os_map_owners. Use a supported os, add map entries, or set var.ami."
+    }
+  }
 }
 
 
 # resource block for ec2 #
 resource "aws_instance" "this" {
   count                       = local.enabled ? 1 : 0
-  ami                         = var.ami != "" ? var.ami : data.aws_ami.search.id
+  ami                         = var.ami != null && var.ami != "" ? var.ami : one(data.aws_ami.search[*].id)
   associate_public_ip_address = local.eni_mode ? null : var.associate_public_ip_address
   disable_api_termination     = var.disable_api_termination
   ebs_optimized               = var.ebs_optimized
