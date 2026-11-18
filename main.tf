@@ -5,13 +5,11 @@ locals {
   # data.aws_subnet.subnet rejects setting both variables.
   create_eni = var.secondary_private_ips > 0
   eni_mode   = local.existing_eni || local.create_eni
-  primary_eni_id = local.existing_eni ? var.network_interface_id : (
-    local.create_eni ? aws_network_interface.this[0].id : null
-  )
+  primary_eni_id = local.existing_eni ? var.network_interface_id : one(aws_network_interface.this[*].id)
 }
 
 resource "aws_network_interface" "this" {
-  count             = local.create_eni ? 1 : 0
+  count             = local.enabled && local.create_eni ? 1 : 0
   subnet_id         = var.subnet_id
   security_groups   = var.vpc_security_group_ids
   private_ips_count = var.secondary_private_ips
@@ -152,21 +150,21 @@ resource "aws_instance" "this" {
 
 # resource block for eip #
 resource "aws_eip" "this" {
-  count    = var.enabled_eip ? 1 : 0
+  count    = local.enabled && var.enabled_eip ? 1 : 0
 #  domain   = "vpc"
   tags     = var.tags
 }
 
 # resource block for ec2 and eip association #
 resource "aws_eip_association" "eip_assoc" {
-  count    = var.enabled_eip ? 1 : 0
+  count    = local.enabled && var.enabled_eip ? 1 : 0
   instance_id   = aws_instance.this.*.id[0]
   allocation_id = aws_eip.this.*.id[0]
 
 }
 # resource block for ebs volumes #
 resource "aws_ebs_volume" "this" {
-  count             = var.enabled_ebs_volume1 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume1 ? 1 : 0
   size              = var.ebs_volume1_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume1_iops : null
@@ -180,7 +178,7 @@ resource "aws_ebs_volume" "this" {
 }
 
 resource "aws_volume_attachment" "this" {
-  count       = var.enabled_ebs_volume1 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume1 ? 1 : 0
   device_name = "/dev/sdh"
   volume_id   = aws_ebs_volume.this.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -190,7 +188,7 @@ resource "aws_volume_attachment" "this" {
 }
 
 resource "aws_ebs_volume" "vol2" {
-  count             = var.enabled_ebs_volume2 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume2 ? 1 : 0
   size              = var.ebs_volume2_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume2_iops : null
@@ -204,7 +202,7 @@ resource "aws_ebs_volume" "vol2" {
 }
 
 resource "aws_volume_attachment" "attachment2" {
-  count       = var.enabled_ebs_volume2 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume2 ? 1 : 0
   device_name = "/dev/sdf"
   volume_id   = aws_ebs_volume.vol2.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -214,7 +212,7 @@ resource "aws_volume_attachment" "attachment2" {
 }
 
 resource "aws_ebs_volume" "vol3" {
-  count             = var.enabled_ebs_volume3 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume3 ? 1 : 0
   size              = var.ebs_volume3_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume3_iops : null
@@ -228,7 +226,7 @@ resource "aws_ebs_volume" "vol3" {
 }
 
 resource "aws_volume_attachment" "attachment3" {
-  count       = var.enabled_ebs_volume3 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume3 ? 1 : 0
   device_name = "/dev/sdj"
   volume_id   = aws_ebs_volume.vol3.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -238,7 +236,7 @@ resource "aws_volume_attachment" "attachment3" {
 }
 
 resource "aws_ebs_volume" "vol4" {
-  count             = var.enabled_ebs_volume4 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume4 ? 1 : 0
   size              = var.ebs_volume4_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume4_iops : null
@@ -252,7 +250,7 @@ resource "aws_ebs_volume" "vol4" {
 }
 
 resource "aws_volume_attachment" "attachment4" {
-  count       = var.enabled_ebs_volume4 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume4 ? 1 : 0
   device_name = "/dev/sdi"
   volume_id   = aws_ebs_volume.vol4.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -262,7 +260,7 @@ resource "aws_volume_attachment" "attachment4" {
 }
 
 resource "aws_ebs_volume" "vol5" {
-  count             = var.enabled_ebs_volume5 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume5 ? 1 : 0
   size              = var.ebs_volume5_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume5_iops : null
@@ -276,7 +274,7 @@ resource "aws_ebs_volume" "vol5" {
 }
 
 resource "aws_volume_attachment" "attachment5" {
-  count       = var.enabled_ebs_volume5 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume5 ? 1 : 0
   device_name = "/dev/sdk"
   volume_id   = aws_ebs_volume.vol5.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -286,7 +284,7 @@ resource "aws_volume_attachment" "attachment5" {
 }
 
 resource "aws_ebs_volume" "vol6" {
-  count             = var.enabled_ebs_volume6 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume6 ? 1 : 0
   size              = var.ebs_volume6_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume6_iops : null
@@ -300,7 +298,7 @@ resource "aws_ebs_volume" "vol6" {
 }
 
 resource "aws_volume_attachment" "attachment6" {
-  count       = var.enabled_ebs_volume6 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume6 ? 1 : 0
   device_name = "/dev/sdl"
   volume_id   = aws_ebs_volume.vol6.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -310,7 +308,7 @@ resource "aws_volume_attachment" "attachment6" {
 }
 
 resource "aws_ebs_volume" "vol7" {
-  count             = var.enabled_ebs_volume7 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume7 ? 1 : 0
   size              = var.ebs_volume7_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume7_iops : null
@@ -324,7 +322,7 @@ resource "aws_ebs_volume" "vol7" {
 }
 
 resource "aws_volume_attachment" "attachment7" {
-  count       = var.enabled_ebs_volume7 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume7 ? 1 : 0
   device_name = "/dev/sdm"
   volume_id   = aws_ebs_volume.vol7.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -334,7 +332,7 @@ resource "aws_volume_attachment" "attachment7" {
 }
 
 resource "aws_ebs_volume" "vol8" {
-  count             = var.enabled_ebs_volume8 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume8 ? 1 : 0
   size              = var.ebs_volume8_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume8_iops : null
@@ -348,7 +346,7 @@ resource "aws_ebs_volume" "vol8" {
 }
 
 resource "aws_volume_attachment" "attachment8" {
-  count       = var.enabled_ebs_volume8 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume8 ? 1 : 0
   device_name = "/dev/sdn"
   volume_id   = aws_ebs_volume.vol8.*.id[0]
   instance_id = aws_instance.this.*.id[0]
@@ -358,7 +356,7 @@ resource "aws_volume_attachment" "attachment8" {
 }
 
 resource "aws_ebs_volume" "vol9" {
-  count             = var.enabled_ebs_volume9 ? 1 : 0
+  count             = local.enabled && var.enabled_ebs_volume9 ? 1 : 0
   size              = var.ebs_volume9_size
   type              = var.volume_type
   iops              = contains(["gp3", "io1", "io2"], var.volume_type) ? var.ebs_volume9_iops : null
@@ -372,7 +370,7 @@ resource "aws_ebs_volume" "vol9" {
 }
 
 resource "aws_volume_attachment" "attachment9" {
-  count       = var.enabled_ebs_volume9 ? 1 : 0
+  count       = local.enabled && var.enabled_ebs_volume9 ? 1 : 0
   device_name = "/dev/sdo"
   volume_id   = aws_ebs_volume.vol9.*.id[0]
   instance_id = aws_instance.this.*.id[0]
