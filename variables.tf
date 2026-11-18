@@ -16,6 +16,16 @@ variable "secondary_private_ips" {
   description = "Number of secondary private IPs to assign to a secondary ENI"
 }
 
+variable "network_interface_id" {
+  type        = string
+  default     = null
+  description = "(Optional) ID of an existing network interface to use as the instance's primary network interface. When set, vpc_security_group_ids and associate_public_ip_address are not applied to the instance; configure them on the ENI instead. subnet_id is still required (it locates the VPC for the Firewall Manager security group lookup). Cannot be combined with secondary_private_ips."
+  validation {
+    condition     = var.network_interface_id == null ? true : can(regex("^eni-[0-9a-f]+$", var.network_interface_id))
+    error_message = "var.network_interface_id must be a network interface ID like eni-0123456789abcdef0."
+  }
+}
+
 variable "core_count" {
   type        = number
   description = "custom vcpu count"

@@ -1,9 +1,17 @@
 locals {
-  eni_mode = var.secondary_private_ips > 0
+  existing_eni = var.network_interface_id != null
+  # count must not depend on network_interface_id: it may be unknown at plan time
+  # when the ENI is created in the same apply. The precondition on aws_instance
+  # rejects setting both variables.
+  create_eni = var.secondary_private_ips > 0
+  eni_mode   = local.existing_eni || local.create_eni
+  primary_eni_id = local.existing_eni ? var.network_interface_id : (
+    local.create_eni ? aws_network_interface.this[0].id : null
+  )
 }
 
 resource "aws_network_interface" "this" {
-  count             = local.eni_mode ? 1 : 0
+  count             = local.create_eni ? 1 : 0
   subnet_id         = var.subnet_id
   security_groups   = var.vpc_security_group_ids
   private_ips_count = var.secondary_private_ips
@@ -99,7 +107,7 @@ resource "aws_instance" "this" {
   dynamic "primary_network_interface" {
     for_each = local.eni_mode ? [1] : []
     content {
-      network_interface_id = aws_network_interface.this[0].id
+      network_interface_id = local.primary_eni_id
     }
   }
   cpu_options {
@@ -116,6 +124,10 @@ resource "aws_instance" "this" {
     tags        = var.tags
   }
   lifecycle {
+    precondition {
+      condition     = !(local.existing_eni && var.secondary_private_ips > 0)
+      error_message = "network_interface_id and secondary_private_ips cannot both be set. Assign secondary IPs on the existing network interface instead."
+    }
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
     ignore_changes = [tags["ResourceGroup"],tags["ucop:AWSPatchPolicy"],root_block_device[0].tags["ucop:prePatchEbsSnapshot"],ami,associate_public_ip_address,user_data]
   }
