@@ -44,6 +44,10 @@ data "aws_subnet" "subnet" {
   # can't reference other variables before Terraform 1.9.
   lifecycle {
     precondition {
+      condition     = var.subnet_id != null && var.subnet_id != ""
+      error_message = "subnet_id is required."
+    }
+    precondition {
       condition     = !(var.network_interface_id != null && var.secondary_private_ips > 0)
       error_message = "network_interface_id and secondary_private_ips cannot both be set. Assign secondary IPs on the existing network interface instead."
     }
