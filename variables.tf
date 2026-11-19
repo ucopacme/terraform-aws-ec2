@@ -427,28 +427,14 @@ variable "raw_user_data" {
 
 variable "vcpu_count" {
   type        = number
-  description = "Number of desired vCPUs (used to auto-select instance type from ec2_instance_map)"
+  description = "Number of desired vCPUs, used with memory_gb to auto-select an instance type from ec2_instance_map. Must be a top-level key of that map (2, 4, 8, 16 or 32 with the default map); checked at plan time."
   default     = null
-  validation {
-    condition = var.vcpu_count == null ? true : contains(
-      [2, 4, 8, 16, 32],
-      var.vcpu_count
-    )
-    error_message = "var.vcpu_count is not valid, choices are: 2,4,8,16,32."
-  }
 }
 
 variable "memory_gb" {
   type        = number
-  description = "GB of desired memory (used to auto-select instance type from ec2_instance_map)"
+  description = "GB of desired memory, used with vcpu_count to auto-select an instance type from ec2_instance_map. Must be a second-level key of that map for the chosen vcpu_count (1 to 256 with the default map); checked at plan time."
   default     = null
-  validation {
-    condition = var.memory_gb == null ? true : contains(
-      [1, 2, 4, 8, 16, 32, 64, 128, 256],
-      var.memory_gb
-    )
-    error_message = "var.memory_gb is not valid, choices are: 1,2,4,8,16,32,64,128,256."
-  }
 }
 
 # AMI search
