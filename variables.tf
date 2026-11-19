@@ -455,7 +455,7 @@ variable "memory_gb" {
 
 variable "os" {
   type        = string
-  description = "The OS reference to search for. Must be a key in amis_os_map_regex (checked at plan time when ami is not set)."
+  description = "The OS reference to search for. Must be a key in amis_os_map_name_filter (checked at plan time when ami is not set)."
   default     = "al2023"
   nullable    = false
   # Map membership can't be checked here: before Terraform 1.9, validation
@@ -478,29 +478,29 @@ variable "amis_primary_owners" {
   }
 }
 
-variable "amis_os_map_regex" {
-  description = "Map of regex to search amis"
+variable "amis_os_map_name_filter" {
+  description = "Map of os key to an EC2 DescribeImages `name` filter pattern. Patterns are matched server-side against the whole AMI name; `*` matches any run of characters and `?` matches a single character. Regex syntax is not supported."
   type        = map(string)
 
   default = {
-    ubuntu1804  = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
-    ubuntu1810  = "^ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-.*"
-    ubuntu1904  = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
-    centos7     = "CentOS.Linux.7.*x86_64.*"
-    centos8     = "CentOS.Linux.8.*x86_64.*"
-    ol8         = "^OL8.9-x86_64.*"
-    ol9         = "^OL9.3-x86_64.*"
-    rhel6       = "^RHEL-6.*x86_64.*"
-    rhel7       = "^RHEL-7.*x86_64.*"
-    rhel8       = "^RHEL-8.10.*x86_64.*"
-    rhel9       = "^RHEL-9.8.*x86_64.*"
-    rhel10      = "^RHEL-10.2.*x86_64.*"
-    amazon2     = "^amzn2-ami-hvm-.*x86_64-gp2"
-    al2023      = "^al2023-ami-2023.*x86_64"
-    windows2025 = "^Windows_Server-2025-English-Full-Base-.*"
-    windows2022 = "^Windows_Server-2022-English-Full-Base-.*"
-    windows2019 = "^Windows_Server-2019-English-Full-Base-.*"
-    windows2016 = "^Windows_Server-2016-English-Full-Base-.*"
+    ubuntu1804  = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"
+    ubuntu1810  = "ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-*"
+    ubuntu1904  = "ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"
+    centos7     = "CentOS Linux 7*x86_64*"
+    centos8     = "CentOS Linux 8*x86_64*"
+    ol8         = "OL8.9-x86_64*"
+    ol9         = "OL9.3-x86_64*"
+    rhel6       = "RHEL-6*x86_64*"
+    rhel7       = "RHEL-7*x86_64*"
+    rhel8       = "RHEL-8.10*x86_64*"
+    rhel9       = "RHEL-9.8*x86_64*"
+    rhel10      = "RHEL-10.2*x86_64*"
+    amazon2     = "amzn2-ami-hvm-*-x86_64-gp2"
+    al2023      = "al2023-ami-2023*-x86_64"
+    windows2025 = "Windows_Server-2025-English-Full-Base-*"
+    windows2022 = "Windows_Server-2022-English-Full-Base-*"
+    windows2019 = "Windows_Server-2019-English-Full-Base-*"
+    windows2016 = "Windows_Server-2016-English-Full-Base-*"
     customlinux = "custom-linux-ami*"
     customwin   = "custom-win-ami*"
     customrhel7 = "custom-rhel7-ami*"

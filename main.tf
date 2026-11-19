@@ -3,8 +3,8 @@ locals {
   # count must not depend on network_interface_id: it may be unknown at plan time
   # when the ENI is created in the same apply. The precondition on
   # data.aws_subnet.subnet rejects setting both variables.
-  create_eni = var.secondary_private_ips > 0
-  eni_mode   = local.existing_eni || local.create_eni
+  create_eni     = var.secondary_private_ips > 0
+  eni_mode       = local.existing_eni || local.create_eni
   primary_eni_id = local.existing_eni ? var.network_interface_id : one(aws_network_interface.this[*].id)
 }
 
@@ -104,21 +104,33 @@ data "aws_ami" "search" {
   most_recent        = true
   include_deprecated = contains(["ol8", "ol9"], var.os) ? true : false
 
+  # Defaults avoid a raw lookup() error; the precondition below reports it clearly.
+  owners = length(var.amis_primary_owners) > 0 ? var.amis_primary_owners : [lookup(var.amis_os_map_owners, var.os, "self")]
+
+  # All filters are applied server-side by DescribeImages, so only matching
+  # images are returned. (name_regex would download every image the owner
+  # publishes and filter locally.)
+  filter {
+    name   = "name"
+    values = [lookup(var.amis_os_map_name_filter, var.os, "")]
+  }
+
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
 
-  # Defaults avoid a raw lookup() error; the precondition below reports it clearly.
-  name_regex = lookup(var.amis_os_map_regex, var.os, null)
-  owners     = length(var.amis_primary_owners) > 0 ? var.amis_primary_owners : [lookup(var.amis_os_map_owners, var.os, "self")]
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
 
   lifecycle {
     precondition {
-      condition = contains(keys(var.amis_os_map_regex), var.os) && (
+      condition = contains(keys(var.amis_os_map_name_filter), var.os) && (
         length(var.amis_primary_owners) > 0 || contains(keys(var.amis_os_map_owners), var.os)
       )
-      error_message = "var.os \"${var.os}\" has no entry in amis_os_map_regex/amis_os_map_owners. Use a supported os, add map entries, or set var.ami."
+      error_message = "var.os \"${var.os}\" has no entry in amis_os_map_name_filter/amis_os_map_owners. Use a supported os, add map entries, or set var.ami."
     }
   }
 }
@@ -165,7 +177,7 @@ resource "aws_instance" "this" {
       error_message = "No instance type for vcpu_count = ${coalesce(var.vcpu_count, "(not set)")}, memory_gb = ${coalesce(var.memory_gb, "(not set)")} in ec2_instance_map. Valid pairs: ${local.valid_instance_sizes}. Or set instance_type directly."
     }
     # ignore_changes = [ami,ebs_block_device,root_block_device,associate_public_ip_address]
-    ignore_changes = [tags["ResourceGroup"],tags["ucop:AWSPatchPolicy"],root_block_device[0].tags["ucop:prePatchEbsSnapshot"],ami,associate_public_ip_address,user_data]
+    ignore_changes = [tags["ResourceGroup"], tags["ucop:AWSPatchPolicy"], root_block_device[0].tags["ucop:prePatchEbsSnapshot"], ami, associate_public_ip_address, user_data]
   }
   metadata_options {
     http_endpoint               = "enabled"
@@ -178,14 +190,14 @@ resource "aws_instance" "this" {
 
 # resource block for eip #
 resource "aws_eip" "this" {
-  count    = local.enabled && var.enabled_eip ? 1 : 0
-  domain   = "vpc"
-  tags     = var.tags
+  count  = local.enabled && var.enabled_eip ? 1 : 0
+  domain = "vpc"
+  tags   = var.tags
 }
 
 # resource block for ec2 and eip association #
 resource "aws_eip_association" "eip_assoc" {
-  count    = local.enabled && var.enabled_eip ? 1 : 0
+  count         = local.enabled && var.enabled_eip ? 1 : 0
   instance_id   = one(aws_instance.this[*].id)
   allocation_id = one(aws_eip.this[*].id)
 
@@ -199,7 +211,7 @@ resource "aws_ebs_volume" "this" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume1_throughput : null
   snapshot_id       = var.snapshot_id_volume1
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -211,7 +223,7 @@ resource "aws_volume_attachment" "this" {
   volume_id   = one(aws_ebs_volume.this[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -223,7 +235,7 @@ resource "aws_ebs_volume" "vol2" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume2_throughput : null
   snapshot_id       = var.snapshot_id_volume2
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -235,7 +247,7 @@ resource "aws_volume_attachment" "attachment2" {
   volume_id   = one(aws_ebs_volume.vol2[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -247,7 +259,7 @@ resource "aws_ebs_volume" "vol3" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume3_throughput : null
   snapshot_id       = var.snapshot_id_volume3
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -259,7 +271,7 @@ resource "aws_volume_attachment" "attachment3" {
   volume_id   = one(aws_ebs_volume.vol3[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -271,7 +283,7 @@ resource "aws_ebs_volume" "vol4" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume4_throughput : null
   snapshot_id       = var.snapshot_id_volume4
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -283,7 +295,7 @@ resource "aws_volume_attachment" "attachment4" {
   volume_id   = one(aws_ebs_volume.vol4[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -295,7 +307,7 @@ resource "aws_ebs_volume" "vol5" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume5_throughput : null
   snapshot_id       = var.snapshot_id_volume5
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -307,7 +319,7 @@ resource "aws_volume_attachment" "attachment5" {
   volume_id   = one(aws_ebs_volume.vol5[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -319,7 +331,7 @@ resource "aws_ebs_volume" "vol6" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume6_throughput : null
   snapshot_id       = var.snapshot_id_volume6
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -331,7 +343,7 @@ resource "aws_volume_attachment" "attachment6" {
   volume_id   = one(aws_ebs_volume.vol6[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -343,7 +355,7 @@ resource "aws_ebs_volume" "vol7" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume7_throughput : null
   snapshot_id       = var.snapshot_id_volume7
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -355,7 +367,7 @@ resource "aws_volume_attachment" "attachment7" {
   volume_id   = one(aws_ebs_volume.vol7[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -367,7 +379,7 @@ resource "aws_ebs_volume" "vol8" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume8_throughput : null
   snapshot_id       = var.snapshot_id_volume8
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -379,7 +391,7 @@ resource "aws_volume_attachment" "attachment8" {
   volume_id   = one(aws_ebs_volume.vol8[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
 
@@ -391,7 +403,7 @@ resource "aws_ebs_volume" "vol9" {
   throughput        = contains(["gp3"], var.volume_type) ? var.ebs_volume9_throughput : null
   snapshot_id       = var.snapshot_id_volume9
   availability_zone = one(aws_instance.this[*].availability_zone)
-  tags                        = var.tags
+  tags              = var.tags
   lifecycle {
     ignore_changes = [availability_zone]
   }
@@ -403,6 +415,6 @@ resource "aws_volume_attachment" "attachment9" {
   volume_id   = one(aws_ebs_volume.vol9[*].id)
   instance_id = one(aws_instance.this[*].id)
   lifecycle {
-    ignore_changes = [instance_id,volume_id]
+    ignore_changes = [instance_id, volume_id]
   }
 }
