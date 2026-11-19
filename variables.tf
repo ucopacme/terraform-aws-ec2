@@ -468,64 +468,70 @@ variable "os" {
 }
 
 variable "amis_primary_owners" {
-  description = "Force the ami Owner, could be (self) or specific (id)"
-  default     = ""
+  description = "(Optional) AMI owners to search instead of the amis_os_map_owners entry for var.os. Each element is an account ID or an alias such as \"self\" or \"amazon\". Empty list means use amis_os_map_owners."
+  type        = list(string)
+  default     = []
+  nullable    = false
+  validation {
+    condition     = alltrue([for o in var.amis_primary_owners : can(regex("^([0-9]{12}|self|amazon|aws-marketplace|aws-backup-vault)$", o))])
+    error_message = "Each amis_primary_owners element must be a 12-digit account ID or one of: self, amazon, aws-marketplace, aws-backup-vault."
+  }
 }
 
 variable "amis_os_map_regex" {
   description = "Map of regex to search amis"
-  type        = map(any)
+  type        = map(string)
 
   default = {
-    ubuntu1804          = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
-    ubuntu1810          = "^ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-.*"
-    ubuntu1904          = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
-    centos7             = "CentOS.Linux.7.*x86_64.*"
-    centos8             = "CentOS.Linux.8.*x86_64.*"
-    ol8                 = "^OL8.9-x86_64.*"
-    ol9                 = "^OL9.3-x86_64.*"
-    rhel6               = "^RHEL-6.*x86_64.*"
-    rhel7               = "^RHEL-7.*x86_64.*"
-    rhel8               = "^RHEL-8.10.*x86_64.*"
-    rhel9               = "^RHEL-9.8.*x86_64.*"
-    rhel10              = "^RHEL-10.2.*x86_64.*"
-    amazon2             = "^amzn2-ami-hvm-.*x86_64-gp2"
-    al2023              = "^al2023-ami-2023.*x86_64"
-    windows2025         = "^Windows_Server-2025-English-Full-Base-.*"
-    windows2022         = "^Windows_Server-2022-English-Full-Base-.*"
-    windows2019         = "^Windows_Server-2019-English-Full-Base-.*"
-    windows2016         = "^Windows_Server-2016-English-Full-Base-.*"
-    customlinux         = "custom-linux-ami*"
-    customwin           = "custom-win-ami*"
-    customrhel7         = "custom-rhel7-ami*"
+    ubuntu1804  = "^ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-.*"
+    ubuntu1810  = "^ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-.*"
+    ubuntu1904  = "^ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-.*"
+    centos7     = "CentOS.Linux.7.*x86_64.*"
+    centos8     = "CentOS.Linux.8.*x86_64.*"
+    ol8         = "^OL8.9-x86_64.*"
+    ol9         = "^OL9.3-x86_64.*"
+    rhel6       = "^RHEL-6.*x86_64.*"
+    rhel7       = "^RHEL-7.*x86_64.*"
+    rhel8       = "^RHEL-8.10.*x86_64.*"
+    rhel9       = "^RHEL-9.8.*x86_64.*"
+    rhel10      = "^RHEL-10.2.*x86_64.*"
+    amazon2     = "^amzn2-ami-hvm-.*x86_64-gp2"
+    al2023      = "^al2023-ami-2023.*x86_64"
+    windows2025 = "^Windows_Server-2025-English-Full-Base-.*"
+    windows2022 = "^Windows_Server-2022-English-Full-Base-.*"
+    windows2019 = "^Windows_Server-2019-English-Full-Base-.*"
+    windows2016 = "^Windows_Server-2016-English-Full-Base-.*"
+    customlinux = "custom-linux-ami*"
+    customwin   = "custom-win-ami*"
+    customrhel7 = "custom-rhel7-ami*"
   }
 }
 
 variable "amis_os_map_owners" {
   description = "Map of amis owner to filter only official amis"
-  type        = map(any)
+  type        = map(string)
   default = {
-    ubuntu1804          = "099720109477" #CANONICAL
-    ubuntu1810          = "099720109477" #CANONICAL
-    ubuntu1904          = "099720109477" #CANONICAL
-    ol8                 = "131827586825" #Oracle
-    ol9                 = "131827586825" #Oracle
-    rhel6               = "309956199498" #Amazon Web Services
-    rhel7               = "309956199498" #Amazon Web Services
-    rhel8               = "309956199498" #Amazon Web Services
-    rhel9               = "309956199498" #Amazon Web Services
-    rhel10              = "309956199498" #Amazon Web Services
-    centos7             = "679593333241"
-    centos8             = "679593333241"
-    amazon2             = "137112412989" #amazon
-    al2023              = "137112412989" #amazon
-    windows2019         = "801119661308" #amazon
-    windows2025         = "801119661308" #amazon
-    windows2022         = "801119661308" #amazon
-    windows2016         = "801119661308" #amazon
-    customlinux         = "self"
-    customwin           = "self"
-    customrhel7         = "self"
+    ubuntu1804  = "099720109477" #CANONICAL
+    ubuntu1810  = "099720109477" #CANONICAL
+    ubuntu1904  = "099720109477" #CANONICAL
+    ol8         = "131827586825" #Oracle
+    ol9         = "131827586825" #Oracle
+    rhel6       = "309956199498" #Amazon Web Services
+    rhel7       = "309956199498" #Amazon Web Services
+    rhel8       = "309956199498" #Amazon Web Services
+    rhel9       = "309956199498" #Amazon Web Services
+    rhel10      = "309956199498" #Amazon Web Services
+    centos7     = "679593333241"
+    centos8     = "679593333241"
+    amazon2     = "137112412989" #amazon
+    al2023      = "137112412989" #amazon
+    windows2019 = "801119661308" #amazon
+    windows2025 = "801119661308" #amazon
+    windows2022 = "801119661308" #amazon
+    windows2016 = "801119661308" #amazon
+    customlinux = "self"
+    customwin   = "self"
+    customrhel7 = "self"
   }
 }
 
@@ -569,7 +575,7 @@ variable "base_user_data" {
   type        = map(string)
 
   default = {
-    al2023 = <<-EOF
+    al2023      = <<-EOF
              #!/bin/bash
              cd /tmp
              sudo dnf install -y amazon-cloudwatch-agent
@@ -579,7 +585,7 @@ variable "base_user_data" {
                sudo systemctl start amazon-cloudwatch-agent
              fi
            EOF
-    amazon2 = <<-EOF
+    amazon2     = <<-EOF
               #!/bin/bash
               cd /tmp
               sudo yum install -y amazon-cloudwatch-agent
@@ -589,7 +595,7 @@ variable "base_user_data" {
                 sudo systemctl start amazon-cloudwatch-agent
               fi
             EOF
-    rhel7 = <<-EOF
+    rhel7       = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo yum install -y \
@@ -603,7 +609,7 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
-    rhel8 = <<-EOF
+    rhel8       = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3
@@ -620,7 +626,7 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
-    rhel9 = <<-EOF
+    rhel9       = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3
@@ -637,7 +643,7 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
-    rhel10 = <<-EOF
+    rhel10      = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3
@@ -654,7 +660,7 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
-    ol8 = <<-EOF
+    ol8         = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3
@@ -671,7 +677,7 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
-    ol9 = <<-EOF
+    ol9         = <<-EOF
             #!/bin/bash
             cd /tmp
             sudo dnf install -y python3

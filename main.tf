@@ -111,7 +111,7 @@ data "aws_ami" "search" {
 
   # Defaults avoid a raw lookup() error; the precondition below reports it clearly.
   name_regex = lookup(var.amis_os_map_regex, var.os, null)
-  owners     = [length(var.amis_primary_owners) == 0 ? lookup(var.amis_os_map_owners, var.os, "self") : var.amis_primary_owners]
+  owners     = length(var.amis_primary_owners) > 0 ? var.amis_primary_owners : [lookup(var.amis_os_map_owners, var.os, "self")]
 
   lifecycle {
     precondition {
