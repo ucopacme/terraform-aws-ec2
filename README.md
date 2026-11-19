@@ -103,27 +103,39 @@ module "ec2" {
   }
 }
 
-2. (Optional) create outputs.tf config file, copy/paste the following configuration.
+2. (Optional) create outputs.tf config file, copy/paste the following configuration. All values are null when `enabled = false`.
 
+```hcl
 output "instance_name" {
-  description = "Value of the Name tag, or null if tags has no Name key"
+  description = "Value of the Name tag"
   value       = module.ec2.instance_name
 }
 output "instance_id" {
   description = "Instance ID"
-  value       = join("", aws_instance.this.*.id)
+  value       = module.ec2.instance_id
 }
 output "instance_arn" {
-  description = "Instance ID"
-  value       = join("", aws_instance.this.*.arn)
+  description = "Instance ARN"
+  value       = module.ec2.instance_arn
 }
-output "instance_public_ip" {
-  description = "Instance ip"
-  value       = join("", aws_instance.this.*.public_ip)
+output "instance_type" {
+  description = "Instance type in use (set directly or auto-selected)"
+  value       = module.ec2.instance_type
+}
+output "ami" {
+  description = "AMI the instance was launched from (set directly or auto-selected)"
+  value       = module.ec2.ami
 }
 output "instance_private_ip" {
-  description = "Instance ip"
-  value       = join("", aws_instance.this.*.private_ip)
+  description = "Primary private IP"
+  value       = module.ec2.instance_private_ip
 }
+output "eip_public_ip" {
+  description = "Elastic IP, if enabled_eip = true"
+  value       = module.ec2.eip_public_ip
+}
+```
+
+Other available outputs: `availability_zone`, `instance_public_ip`, `instance_private_dns`, `network_interface_id`, `ebs_vol1` through `ebs_vol9`.
 
 
