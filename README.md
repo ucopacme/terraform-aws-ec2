@@ -106,8 +106,8 @@ module "ec2" {
 2. (Optional) create outputs.tf config file, copy/paste the following configuration.
 
 output "instance_name" {
-description = "The tag name for this instance"
-value = var.tags.Name
+  description = "Value of the Name tag, or null if tags has no Name key"
+  value       = module.ec2.instance_name
 }
 output "instance_id" {
   description = "Instance ID"

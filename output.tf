@@ -1,6 +1,6 @@
 output "instance_name" {
-  description = "The tag name for this instance"
-  value = var.tags.Name
+  description = "Value of the Name tag, or null if tags has no Name key"
+  value       = lookup(var.tags, "Name", null)
 }
 
 output "instance_id" {
