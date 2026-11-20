@@ -469,14 +469,8 @@ variable "amis_os_map_name_filter" {
   type        = map(string)
 
   default = {
-    ubuntu1804  = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"
-    ubuntu1810  = "ubuntu/images/hvm-ssd/ubuntu-cosmic-18.10-amd64-server-*"
-    ubuntu1904  = "ubuntu/images/hvm-ssd/ubuntu-disco-19.04-amd64-server-*"
-    centos7     = "CentOS Linux 7*x86_64*"
-    centos8     = "CentOS Linux 8*x86_64*"
     ol8         = "OL8.9-x86_64*"
     ol9         = "OL9.3-x86_64*"
-    rhel6       = "RHEL-6*x86_64*"
     rhel7       = "RHEL-7*x86_64*"
     rhel8       = "RHEL-8.10*x86_64*"
     rhel9       = "RHEL-9.8*x86_64*"
@@ -486,10 +480,8 @@ variable "amis_os_map_name_filter" {
     windows2025 = "Windows_Server-2025-English-Full-Base-*"
     windows2022 = "Windows_Server-2022-English-Full-Base-*"
     windows2019 = "Windows_Server-2019-English-Full-Base-*"
-    windows2016 = "Windows_Server-2016-English-Full-Base-*"
     customlinux = "custom-linux-ami*"
     customwin   = "custom-win-ami*"
-    customrhel7 = "custom-rhel7-ami*"
   }
 }
 
@@ -497,27 +489,19 @@ variable "amis_os_map_owners" {
   description = "Map of amis owner to filter only official amis"
   type        = map(string)
   default = {
-    ubuntu1804  = "099720109477" #CANONICAL
-    ubuntu1810  = "099720109477" #CANONICAL
-    ubuntu1904  = "099720109477" #CANONICAL
-    ol8         = "131827586825" #Oracle
-    ol9         = "131827586825" #Oracle
-    rhel6       = "309956199498" #Amazon Web Services
-    rhel7       = "309956199498" #Amazon Web Services
-    rhel8       = "309956199498" #Amazon Web Services
-    rhel9       = "309956199498" #Amazon Web Services
-    rhel10      = "309956199498" #Amazon Web Services
-    centos7     = "679593333241"
-    centos8     = "679593333241"
-    amazon2     = "137112412989" #amazon
-    al2023      = "137112412989" #amazon
-    windows2019 = "801119661308" #amazon
-    windows2025 = "801119661308" #amazon
-    windows2022 = "801119661308" #amazon
-    windows2016 = "801119661308" #amazon
+    ol8         = "131827586825" # Oracle
+    ol9         = "131827586825" # Oracle
+    rhel7       = "309956199498" # Red Hat
+    rhel8       = "309956199498" # Red Hat
+    rhel9       = "309956199498" # Red Hat
+    rhel10      = "309956199498" # Red Hat
+    amazon2     = "137112412989" # Amazon (Linux AMIs)
+    al2023      = "137112412989" # Amazon (Linux AMIs)
+    windows2019 = "801119661308" # Amazon (Windows AMIs)
+    windows2025 = "801119661308" # Amazon (Windows AMIs)
+    windows2022 = "801119661308" # Amazon (Windows AMIs)
     customlinux = "self"
     customwin   = "self"
-    customrhel7 = "self"
   }
 }
 
@@ -680,12 +664,6 @@ variable "base_user_data" {
               sudo systemctl start amazon-cloudwatch-agent
             fi
           EOF
-    windows2016 = <<-EOF
-                  <powershell>
-                  Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
-                  & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" -a fetch-config -m ec2 -s -c ssm:AmazonCloudWatch-CWAgentWindowsBaseConfig
-                  </powershell>
-                EOF
     windows2019 = <<-EOF
                   <powershell>
                   Start-Process msiexec.exe -Wait -ArgumentList '/i https://amazoncloudwatch-agent-us-west-2.s3.us-west-2.amazonaws.com/windows/amd64/latest/amazon-cloudwatch-agent.msi /quiet /qn'
