@@ -1,7 +1,11 @@
 variable "ami" {
-  description = "(Optional) Amazon Machine Image"
+  description = "(Optional) AMI ID to launch. When set, the os-based AMI search is skipped."
   type        = string
-  default     = ""
+  default     = null
+  validation {
+    condition     = var.ami == null || can(regex("^ami-[0-9a-f]+$", var.ami))
+    error_message = "var.ami must be an AMI ID like ami-0123456789abcdef0, or null to search by os."
+  }
 }
 
 variable "associate_public_ip_address" {
@@ -237,9 +241,13 @@ variable "instance_type" {
 }
 
 variable "subnet_id" {
-  description = "Subnet Id"
+  description = "Subnet ID for the instance. Also used to locate the VPC for the Firewall Manager security group lookup."
   type        = string
-  default     = ""
+  nullable    = false
+  validation {
+    condition     = can(regex("^subnet-[0-9a-f]+$", var.subnet_id))
+    error_message = "var.subnet_id must be a subnet ID like subnet-0123456789abcdef0."
+  }
 }
 
 variable "tags" {
@@ -367,8 +375,8 @@ variable "volume_type" {
 
 variable "key_name" {
   type        = string
-  description = "EC2 key"
-  default     = ""
+  description = "(Optional) Name of an existing EC2 key pair"
+  default     = null
 }
 
 variable "vpc_security_group_ids" {

@@ -42,10 +42,6 @@ data "aws_subnet" "subnet" {
   # can't reference other variables before Terraform 1.9.
   lifecycle {
     precondition {
-      condition     = var.subnet_id != null && var.subnet_id != ""
-      error_message = "subnet_id is required."
-    }
-    precondition {
       condition     = !(var.network_interface_id != null && var.secondary_private_ips > 0)
       error_message = "network_interface_id and secondary_private_ips cannot both be set. Assign secondary IPs on the existing network interface instead."
     }
@@ -64,7 +60,7 @@ data "aws_security_groups" "fms_security_groups_common_usw2" {
 }
 
 locals {
-  enabled = var.enabled == true
+  enabled = var.enabled
   # Null-safe so a bad vcpu_count/memory_gb pair reaches the precondition on
   # aws_instance.this (clear error) instead of failing inside coalesce()/min().
   vcpu_count = var.vcpu_count != null ? var.vcpu_count : (
@@ -100,9 +96,9 @@ locals {
 
 # Only search when var.ami isn't set, so an explicit ami doesn't depend on var.os.
 data "aws_ami" "search" {
-  count              = var.ami == null || var.ami == "" ? 1 : 0
+  count              = var.ami == null ? 1 : 0
   most_recent        = true
-  include_deprecated = contains(["ol8", "ol9"], var.os) ? true : false
+  include_deprecated = contains(["ol8", "ol9"], var.os)
 
   # Defaults avoid a raw lookup() error; the precondition below reports it clearly.
   owners = length(var.amis_primary_owners) > 0 ? var.amis_primary_owners : [lookup(var.amis_os_map_owners, var.os, "self")]
@@ -139,7 +135,7 @@ data "aws_ami" "search" {
 # resource block for ec2 #
 resource "aws_instance" "this" {
   count                       = local.enabled ? 1 : 0
-  ami                         = var.ami != null && var.ami != "" ? var.ami : one(data.aws_ami.search[*].id)
+  ami                         = var.ami != null ? var.ami : one(data.aws_ami.search[*].id)
   associate_public_ip_address = local.eni_mode ? null : var.associate_public_ip_address
   disable_api_termination     = var.disable_api_termination
   ebs_optimized               = var.ebs_optimized
