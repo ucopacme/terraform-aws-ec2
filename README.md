@@ -75,19 +75,19 @@ module "ec2" {
   enabled_eip            = false # Default is false, change it to true to add EIP
   enabled_ebs_volume1    = true  # Default is false, change it to true to add ebs volume 1 (device_name = "/dev/sdh")
   ebs_volume1_size       = 50    # Default null
-  snapshot_id_volume1    = ""    # Default null
+  snapshot_id_volume1    = null    # Default null, set to restore from a snapshot
   enabled_ebs_volume2    = true  # Default is false, change it to true to add ebs volume 2 (device_name = "/dev/sdf")
   ebs_volume2_size       = 150   # Default null
-  snapshot_id_volume2    = ""    # Default null
+  snapshot_id_volume2    = null    # Default null, set to restore from a snapshot
   enabled_ebs_volume3    = true  # Default is false, change it to true to add ebs volume 3 (device_name = "/dev/sdj")
   ebs_volume3_size       = 150   # Default null
-  snapshot_id_volume3    = ""    # Default null
+  snapshot_id_volume3    = null    # Default null, set to restore from a snapshot
   enabled_ebs_volume4    = true  # Default is false, change it to true to add ebs volume 4 (device_name = "/dev/sdi")
   ebs_volume4_size       = 400   # Default null
-  snapshot_id_volume4    = ""    # Default null
+  snapshot_id_volume4    = null    # Default null, set to restore from a snapshot
   enabled_ebs_volume5    = false # Default is false, change it to true to add ebs volume 5 (device_name = "/dev/sdk")
   ebs_volume5_size       = 10    # Default null
-  snapshot_id_volume5    = ""    # Default null
+  snapshot_id_volume5    = null    # Default null, set to restore from a snapshot
   tags = {
     "ucop:application" = "xxx"
     "ucop:createdBy"   = "terraform"

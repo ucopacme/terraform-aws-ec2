@@ -264,56 +264,92 @@ variable "root_volume_size" {
 
 variable "snapshot_id_volume1" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 1 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume1 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume1))
+    error_message = "var.snapshot_id_volume1 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume2" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 2 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume2 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume2))
+    error_message = "var.snapshot_id_volume2 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume3" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 3 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume3 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume3))
+    error_message = "var.snapshot_id_volume3 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume4" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 4 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume4 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume4))
+    error_message = "var.snapshot_id_volume4 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume5" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 5 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume5 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume5))
+    error_message = "var.snapshot_id_volume5 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume6" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 6 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume6 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume6))
+    error_message = "var.snapshot_id_volume6 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume7" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 7 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume7 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume7))
+    error_message = "var.snapshot_id_volume7 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume8" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 8 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume8 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume8))
+    error_message = "var.snapshot_id_volume8 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "snapshot_id_volume9" {
   type        = string
-  description = "snapshot ID of the volume"
+  description = "(Optional) Snapshot ID to create EBS volume 9 from"
   default     = null
+  validation {
+    condition     = var.snapshot_id_volume9 == null || can(regex("^snap-[0-9a-f]+$", var.snapshot_id_volume9))
+    error_message = "var.snapshot_id_volume9 must be a snapshot ID like snap-0123456789abcdef0, or null."
+  }
 }
 
 variable "ebs_volume1_size" {
